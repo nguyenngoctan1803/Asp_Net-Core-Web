@@ -1,0 +1,213 @@
+﻿@using DoAn2VADT.Database.Entities
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.OrderDetail>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+             <a class="breadcrumb-item" asp-action="Index" >Đơn hàng</a>
+            <span class="breadcrumb-item active">Chi tiết đơn hàng : trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-7 d-flex">
+                        <a class="btn btn-success fa fa-solid fa-arrow-left" asp-action="Index"></a>
+                        <div class="input-affix m-h-10">
+                            <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                            <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-6 text-right m-v-10">
+                     <button data-orderid="@ViewBag.Id" class="btn btn-danger cancel" ><span>Hủy đơn hàng</span></button>          
+            </div>
+        </div>
+        <div class="table-responsive table-hover">
+           <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Thông tin</th>
+                    <th>Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/product/@item.Product.Image"
+                                         alt=""
+                                         style="width: 70px; height: 70px"
+                                         class="rounded-circle" />
+                                            <div class="mx-3">
+                                                <p class="font-weight-bold mb-1">@item.Product.Name</p>
+                                                <p class="mb-0 text-nowrap">Số lượng: @item.Quantity</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-1 text-nowrap">Đơn giá: @(item.Product.Price?.ToString("n0")) VNĐ</p>
+                                        <p class="text-muted mb-0 text-nowrap">Giảm giá: @(item.Product.Discount?.ToString("n0")) VNĐ</p>
+                                    </td>
+                                    <td class="text-nowrap">@(item.Total?.ToString("n0")) VNĐ</td>
+                                </tr>
+                        }
+
+
+                    }
+
+
+            </tbody>
+        </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" list="@Model" asp-controller="Book" asp-route-CatID="@ViewBag.CurrentCateID" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal cancel-->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content text-center">
+            <form method="post" action="@Url.Action("Cancel", "Order")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hủy đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-light badge-light rounded-pill option1" style="cursor: pointer;">
+                            <input type="radio" name="reason" id="option1" value="Muốn đổi sản phẩm khác"> Muốn đổi sản phẩm khác
+                          </label>
+                          <label class="btn btn-light badge-light rounded-pill option2" style="cursor: pointer;">
+                            <input type="radio" name="reason" id="option2" value="Không còn nhu cầu nữa"> Không còn nhu cầu nữa
+                          </label>
+                          <label class="btn btn-light badge-light rounded-pill option3" style="cursor: pointer;">
+                            <input type="radio" name="reason" id="option3"value="Shop không đủ uy tín"> Shop không đủ uy tín
+                          </label>
+                          <label class="btn btn-light badge-light rounded-pill option4"  style="cursor: pointer;">
+                            <input type="radio" name="reason" id="option4" value="@DoAn2VADT.Shared.Const.REFUSEREASON"> Lý do khác
+                          </label> 
+                    </div>
+                     <div class="form-group collapse mt-3" id="myCollapse">
+                            <input id="refusereason" type="text" class="form-control" name="refusereason" placeholder="Nhập lý do..." />
+                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>                               
+                    <input type="hidden" id="cancelid" name="id" value="@ViewBag.Id"/>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+            <script>
+                $(document).ready(function () {
+                    //toggle
+                    $(".option1").click(function(){
+                        $("#myCollapse").collapse("hide");
+                    });
+                    $(".option2").click(function(){
+                        $("#myCollapse").collapse("hide");
+                    });
+                    $(".option3").click(function(){
+                        $("#myCollapse").collapse("hide");
+                    });
+                    $(".option4").click(function(){
+                        $("#myCollapse").collapse("show");
+                    });
+                    // cancel
+                        $(".cancel").click(function (event) {
+                            var cancelid = $(this).attr("data-orderid");
+                            $("#cancelid").val(cancelid);
+                            $("#cancelModal").modal();
+                        });        
+                        ///////
+                    jQuery("#txtCatID").change(function () {
+                        var Id = jQuery(this).children(":selected").attr("value");
+                        Id = parseFloat(Id);
+                        $('#txtCatID option')
+                            .removeAttr('selected');
+                        $("#txtCatID > [value=" + Id + "]").attr("selected", "true");
+                        $.ajax({
+                            url: '/Book/Filtter',
+                            datatype: "json",
+                            type: "GET",
+                            data: {
+                                CatID: Id
+                            },
+                            async: true,
+                            success: function (results) {
+                                if (results.status == "success") {
+                                    window.location.href = results.redirectUrl;
+                                }
+                            },
+                            error: function (xhr) {
+                                alert('error');
+                            }
+                        });
+                    });
+                    jQuery("#txtIDXB").change(function () {
+                        var Id = jQuery(this).children(":selected").attr("value");
+                        Id = parseFloat(Id);
+                        $('#txtIDXB option')
+                            .removeAttr('selected');
+                        $("#txtIDXB > [value=" + Id + "]").attr("selected", "true");
+                        $.ajax({
+                            url: '/Book/Filtter',
+                            datatype: "json",
+                            type: "GET",
+                            data: {
+                                CatID: Id
+                            },
+                            async: true,
+                            success: function (results) {
+                                if (results.status == "success") {
+                                    window.location.href = results.redirectUrl;
+                                }
+                            },
+                            error: function (xhr) {
+                                alert('error');
+                            }
+                        });
+                    });
+                    $("#keyword").keyup(function () {
+                        var strkeyword = $('#keyword').val();
+                        $.ajax({
+                            url: '/Search/FindBanHang/',
+                            datatype: "json",
+                            type: "POST",
+                            data: { keyword: strkeyword },
+                            async: true,
+                            success: function (results) {
+                                $("#records_table").html("");
+                                $("#records_table").html(results);
+                            },
+                            error: function (xhr) {
+                                alert('error');
+                            }
+                        });
+                    });
+                });
+            </script>
+    }

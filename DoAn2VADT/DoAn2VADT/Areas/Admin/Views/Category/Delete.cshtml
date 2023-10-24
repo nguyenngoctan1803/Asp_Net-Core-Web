@@ -1,0 +1,52 @@
+﻿@model DoAn2VADT.Database.Entities.Category
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+ <!-- Main content -->
+        <section class="content my-2">
+            <form asp-action="Delete">
+                <div class="page-header">
+                    <div class="header-sub-title">
+                        <nav class="breadcrumb breadcrumb-dash">
+                            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                            <a asp-controller="Category" asp-action="Index" class="breadcrumb-item">Danh sách </a>
+                            <span class="breadcrumb-item active">Xóa</span>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Default box -->
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class=" col-md-6">
+                        </div>
+                        <div class=" col-md-6 text-right">
+                            <a class=" btn btn-primary fas fa-undo-alt" asp-action="Index"></a>
+                            <button class=" btn btn-danger far fa-trash-alt" type="submit">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <input type="hidden" asp-for="Id"/>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="ShortDesc">Tên</label>
+                            <div class="form-control">@Html.DisplayFor(model => model.Name)</div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="ShortDesc">Mô tả</label>
+                            <div class="form-control">@Html.DisplayFor(model => model.Description)</div>
+                        </div>
+                    </div> 
+                </div>
+                <!-- /.card-body -->
+
+            </form>
+        </section>
+    </div>
+</div>

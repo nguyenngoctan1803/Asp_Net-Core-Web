@@ -1,0 +1,160 @@
+﻿@model DoAn2VADT.Database.Entities.Product
+
+@{
+    ViewData["Title"] = "Cập nhật sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+@section Styles{
+    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
+    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
+}
+<form asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="page-header">
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                <a asp-controller="Product" asp-action="Index" class="breadcrumb-item">Sản phẩm</a>
+                <span class="breadcrumb-item active">Cập nhật</span>
+            </nav>
+        </div>
+    </div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Image" />
+    <input type="hidden" asp-for="CreatedAt" />
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="col-md-6">
+            </div>
+            <div class=" col-md-6 text-right">
+                <div class="text-right">
+                    <a class="btn btn-success fa fa-solid fa-arrow-left" asp-action="Index"></a>
+                    <button class="btn btn-primary" type="submit"><i class="fas fas fa-save mr-1"></i>Cập nhật</button>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-option">Thông số kỹ thuật</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-description">Mô tả</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">Tên sản phẩm</label>
+                        <input type="text" class="form-control" asp-for="Name">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productBrand">Thương hiệu</label>
+                            <select class="custom-select" asp-for="BrandId" style="min-width: 200px;" asp-items="ViewBag.BrandId">
+                                <option value="" disabled selected>Chọn Thương hiệu</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Danh mục</label>
+                            <select class="custom-select" asp-for="CategoryId" style="min-width: 200px;" asp-items="ViewBag.CategoryId">
+                                <option value="" disabled selected>Chọn Danh mục</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                         <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productPrice">Mã </label>
+                            <input type="text" class="form-control" asp-for="Code">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="font-weight-semibold" for="productName">Số lượng</label>
+                            <input type="number" min="0" class="form-control" asp-for="Quantity">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productPrice">Giá bán</label>
+                            <input type="text" pattern="\d*" class="form-control" asp-for="Price">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Giảm giá</label>
+                            <input type="text" pattern="\d*" class="form-control" asp-for="Discount">
+                        </div>          
+                    </div>
+                    <div class="row"> 
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productBrand">Ảnh</label>
+                            <input name="fThumb" type="file" accept="image/*" class="form-control-file" asp-for="Image" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-option">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                            <label class="font-weight-semibold" for="productName">Màu sắc</label>
+                            <input type="text" class="form-control" asp-for="Color">
+                        </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productBrand">Bộ nhớ</label>
+                            <input type="text" class="form-control" asp-for="Memory">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Ram</label>
+                            <input type="text" pattern="\d*" class="form-control" asp-for="Ram">
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productPrice">Bộ xử lý</label>
+                            <input type="text" class="form-control" asp-for="Main">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="font-weight-semibold" for="productName">Màn hình</label>
+                            <input type="text" class="form-control" asp-for="Screen">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-description">
+            <div class="card">
+                <div class="card-body">
+                    <textarea class="summernote" asp-for="Description"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/Adminassets/vendors/select2/select2.min.js"></script>
+    <script src="~/Adminassets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="~/Adminassets/summernote/summernote-bs4.js"></script>
+
+    <script>
+
+        jQuery(document).ready(function () {
+            $('.summernote').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
+                height: 200,
+                minHeight: null,
+                maxHeight: null,
+                focus: true
+            });
+        });
+    </script>
+}

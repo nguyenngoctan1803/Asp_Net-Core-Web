@@ -1,0 +1,267 @@
+﻿@using DoAn2VADT.Database.Entities
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Thống kê</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+
+    <div class="card-body">
+        <form method="post" action="~/ThongKeTonKho/Index">
+            <div class="row ">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-affix m-v-10">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-affix m-v-10">
+                                <input required name="from_date" type="date" class="form-control" placeholder="Từ ngày" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-affix m-v-10">
+                                <input required name="to_date" type="date" class="form-control" placeholder="Đến ngày" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-affix m-v-10">
+                                <button type="submit" class="btn btn-success form-control">Tìm kiếm</button>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <div class="input-affix m-v-10">
+                                <a class="btn btn-primary form-control" asp-controller="Import" asp-action="Index">Danh sách</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 ">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="m-b-0">Sản phẩm</p>
+                                            <h2 class="m-b-0">
+                                                <span>@ViewBag.GetQuantityOrder Sản phẩm</span>
+                                            </h2>
+                                        </div>
+                                        <div class="avatar avatar-icon avatar-lg avatar-red">
+                                            <i class="anticon anticon-profile"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="m-b-0">Nhập kho</p>
+                                            <h2 class="m-b-0">
+                                                <span>@ViewBag.Import Lần nhập</span>
+                                            </h2>
+                                        </div>
+                                        <div class="avatar avatar-icon avatar-lg avatar-red">
+                                            <i class="anticon anticon-profile"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <p class="m-b-0">Chi phí nhập kho</p>
+                                            <h2 class="m-b-0">
+                                                <span>@ViewBag.GetQuantityImport VNĐ</span>
+                                            </h2>
+                                        </div>
+                                        <div class="avatar avatar-icon avatar-lg avatar-blue">
+                                            <i class="anticon anticon-dollar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-4">
+                        Tổng doanh thu: <input value="@ViewBag.SumToTal.ToString("#,## VND")" disabled="disabled" type="text" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                        Số lượng đơn hàng: <input value="@ViewBag.GetQuantityOrder" disabled="disabled" type="text" class="form-control" />
+                        </div>*@
+
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Tên</th>
+                            <th>Ngày tạo</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody id="records_table">
+                        @if (ViewBag.GetBills == null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img width="60" height="90" src="~/images/book/@item.Image" alt="@item.Name" />
+                                    </td>
+                                    <td>@item.Name</td>
+                                    <td>@item.CreatedAt</td>
+                                    <td>@item.Price VNĐ</td>
+                                    <td>@item.Quantity</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-tone m-r-5 fas fa-eye" asp-controller="ThongKeTonKho" asp-action="Details" asp-route-id="@item.Id"></a>
+                                        <a class="btn btn-success btn-tone m-r-5 fas fa-edit" asp-controller="ThongKeTonKho" asp-action="Edit" asp-route-id="@item.Id"></a>
+                                        <a class="btn btn-danger btn-tone m-r-5 far fa-trash-alt" asp-controller="ThongKeTonKho" asp-action="Delete" asp-route-id="@item.Id"></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            foreach (Product b in ViewBag.GetBills)
+                            {
+                                <tr>
+                                    <td>
+                                        <img width="60" height="90" src="~/images/book/@b.Image" alt="@b.Name" />
+                                    </td>
+                                    <td>@b.Name</td>
+                                    <td>@b.CreatedAt</td>
+                                    <td>@b.Price VNĐ</td>
+                                    <td>@b.Quantity</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-tone m-r-5 fas fa-eye" asp-controller="ThongKeTonKho" asp-action="Details" asp-route-id="@b.Id"></a>
+                                        <a class="btn btn-success btn-tone m-r-5 fas fa-edit" asp-controller="ThongKeTonKho" asp-action="Edit" asp-route-id="@b.Id"></a>
+                                        <a class="btn btn-danger btn-tone m-r-5 far fa-trash-alt" asp-controller="ThongKeTonKho" asp-action="Delete" asp-route-id="@b.Id"></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <pager class="pager-container" list="@Model" asp-controller="ThongKeTonKho" asp-route-CatID="@ViewBag.CurrentCateID" asp-action="Index" />
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#keyword").keyup(function () {
+                var strkeyword = $('#keyword').val();
+                $.ajax({
+                    url: '/Search/FindKho/',
+                    datatype: "json",
+                    type: "POST",
+                    data: { keyword: strkeyword },
+                    async: true,
+                    success: function (results) {
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+        });
+    </script>
+}
+    @* <div class="col-md-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="m-b-0">Net Revenue</p>
+                        <h2 class="m-b-0">
+                            <span>$14,966</span>
+                        </h2>
+                    </div>
+                    <div class="avatar avatar-icon avatar-lg avatar-blue">
+                        <i class="anticon anticon-dollar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="m-b-0">Bounce Rate</p>
+                        <h2 class="m-b-0">
+                            <span>26.80%</span>
+                        </h2>
+                    </div>
+                    <div class="avatar avatar-icon avatar-lg avatar-cyan">
+                        <i class="anticon anticon-bar-chart"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="m-b-0">Orders</p>
+                        <h2 class="m-b-0">
+                            <span>3057</span>
+                        </h2>
+                    </div>
+                    <div class="avatar avatar-icon avatar-lg avatar-red">
+                        <i class="anticon anticon-profile"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="m-b-0">Total Expense</p>
+                        <h2 class="m-b-0">
+                            <span>$6,138</span>
+                        </h2>
+                    </div>
+                    <div class="avatar avatar-icon avatar-lg avatar-gold">
+                        <i class="anticon anticon-bar-chart"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

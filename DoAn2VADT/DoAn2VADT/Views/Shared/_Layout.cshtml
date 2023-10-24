@@ -1,0 +1,354 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Adminassets/images/logo/favicon.png">
+    
+    <!--Fontawesome CDN-->
+     <link rel="stylesheet" href="~/lib/bootstrap/Content/toastr.css" />
+     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+     <link rel="stylesheet" href="~/lib/bootstrap/Content/bootstrap.min.css" />
+     <link rel="stylesheet" href="~/lib/bootstrap/Content/bootstrap.css" />
+    @await RenderSectionAsync("Styles", required: false)
+
+    <style>
+        body {
+            font-family: "Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+        .nav-container {
+            max-width:1320px !important;
+        }
+        .container {
+            max-width:1300px;
+        }
+        .navbar-top {
+            position: fixed;
+            font-size: 0.8em;
+            top: 0;
+            width: 100%;
+            background-color: black !important;
+            display: block;
+            max-height: 35px;
+            transition: top 0.3s;
+        }
+        nav.navbar-menu *{
+            color:white !important;
+        }
+        .nav-menu{
+            font-size:0.85em !important;
+            text-transform:uppercase;
+        }
+            nav.navbar-menu * :hover {
+                transition: all 0.5s ease-in-out 0s;
+            }
+            nav.navbar-menu * :hover,
+            nav.navbar-menu * :focus {
+                background: transparent;
+                color: rgb(1 17 21 / 88%) !important;
+                text-decoration: none;
+            }
+        .navbar-menu {
+            padding:0.1em !important;
+            position: fixed;
+            top: 34.8px;
+            left:0;
+            right:0;
+            z-index: 1230;
+            transition: top 0.3s;
+            background-color: rgb(1 17 21 / 88%) !important;
+        }
+        .dropdown-menu {
+            font-size:0.9em !important;
+            margin-top:10px;
+            background-color: rgb(1 17 21 / 88%) !important;
+            -webkit-transform: translate(0, 50);
+            -o-transform: translate(0, 50);
+            transform: translate(0, 50);
+        }
+        .dropdown-item:hover {
+            color: rgb(1 17 21 / 88%) !important;
+        }
+        .dropdown-item:active {
+            background-color: rgb(1 17 21 / 88%) !important;
+            color: white !important;
+        }
+        .dropdown-menu-center {
+            right: auto;
+            left: 50%;
+            -webkit-transform: translate(-50%, 0);
+            -o-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+        }
+        .dropdown-menu li {
+            position: relative;
+        }
+
+        .dropdown-menu .dropdown-submenu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: -7px;
+        }
+
+        .dropdown-menu .dropdown-submenu-left {
+            right: 100%;
+            left: auto;
+        }
+
+        .dropdown-menu > li:hover > .dropdown-submenu {
+            display: block;
+        }
+        form.menu-search * {
+            font-size:0.9em !important;
+        }
+        .menu-search input {
+            color: white !important;
+            background-color: rgb(1 17 21 / 88%) !important;
+            height: auto !important;
+        }
+        .menu-search button {
+            color: black !important;
+        }
+        .menu-search input:hover,
+        .menu-search input:focus {
+            background: transparent;
+            color: white !important;
+            text-decoration: none;
+        }
+        .carousel-item {
+            height: 425px;
+        }
+
+            .carousel-item img {
+                height: 300px;
+                object-fit: fill;
+                top: 0;
+                left: 0;
+            }
+        .round-black-btn {
+            border-radius: 4px;
+            background: #212529;
+            color: #fff;
+            padding: 7px 45px;
+            display: inline-block;
+            margin-top: 20px;
+            border: solid 2px #212529;
+            transition: all 0.5s ease-in-out 0s;
+        }
+
+            .round-black-btn:hover,
+            .round-black-btn:focus {
+                background: transparent;
+                color: black;
+                text-decoration: none;
+            }
+
+        .description{
+            font-style :italic;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit:cover;
+            transition: transform 2s, filter 1.5s ease-in-out;
+        }
+        .card-feature{
+            overflow: hidden;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+        .card-feature:hover{
+            background-color:#000000db;
+            color:#fff;
+            transform: scale(1.1);
+            transition: all 0.6s ease;
+        }
+        .card-feature:hover a{
+            color:#fff !important;
+        }
+        .card-feature:hover img{
+            transform: scale(1.2);
+            filter: brightness(100%);
+        }
+        footer a{
+            color:limegreen;
+        }
+        footer h2{
+            text-transform:uppercase;
+        }
+        .pagination{
+            justify-content: end !important;
+            margin-top: 15px !important;
+        }
+    </style>
+</head>
+<body>
+    <div>
+ <nav class="navbar navbar-expand-lg bg-dark navbar-top fixed-top" id="navbartop">
+    <div class="container nav-container text-light align-content-center">
+        <div class="w-100 d-flex justify-content-between">
+            <div>
+                <a class="navbar-sm-brand text-light text-decoration-none" href="#">
+                    <i class="fa-solid fa-envelope mx-2"></i>Shiba@company.com
+                </a>
+                <a class="navbar-sm-brand text-light text-decoration-none" href="#">
+                    <i class="fa-solid fa-phone mx-2"></i>0384-659-245
+                </a>
+            </div>
+            <div>
+                <a class="text-light" href="#" target="_blank" rel="sponsored"><i class="fa-brands fa-square-facebook mr-2"></i></a>
+                <a class="text-light" href="#" target="_blank"><i class="fa-brands fa-instagram mr-2"></i></a>
+                <a class="text-light" href="#" target="_blank"><i class="fa-brands fa-twitter  mr-2"></i></a>
+                <a class="text-light" href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-lg navbar-menu navbar-light" id="navbarmenu">
+    <!-- Menu Partial-->
+</nav>
+
+        <div class="container body-content" style="margin-top:100px;">
+            @RenderBody()
+        </div>
+        <hr />
+        <footer class="bg-dark mb-0" id="tempaltemo_footer">
+            <div class="container" style="height:200px;font-size:0.8em">
+                <div class="row">
+                    <div class="col-md-4 pt-3">
+                        <h2 class="h2 text-success border-bottom pb-3 border-light logo">Shiba9duoi</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li>
+                                <i class="fa-solid fa-phone mx-2"></i>
+                                <a class="text-decoration-none" href="#">038-465-9245</a>
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-envelope mx-2"></i>
+                                <a class="text-decoration-none" href="#">Shiba@company.com</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4 pt-3">
+                        <h2 class="h2 text-light border-bottom pb-3 border-light">Sản phẩm</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li><a class="text-decoration-none" href="#">Apple</a></li>
+                            <li><a class="text-decoration-none" href="#">Asus</a></li>
+                            <li><a class="text-decoration-none" href="#">Dell</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4 pt-3">
+                        <h2 class="h2 text-light border-bottom pb-3 border-light">Thông tin khác</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li><a class="text-decoration-none" href="#">Trang chủ</a></li>
+                            <li><a class="text-decoration-none" href="#">Về chúng tôi</a></li>
+                            <li><a class="text-decoration-none" href="#">Địa chỉ</a></li>
+                            <li><a class="text-decoration-none" href="#">Liên hệ</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row text-light mb-1">
+                    <div class="col-12 mb-3">
+                        <div class="w-100 my-1 border-top border-light"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="w-100 bg-black">
+                <div class="container">
+                    <div class="row pt-2">
+                        <div class="col-12">
+                            <p class="text-left text-light">
+                                Copyright &copy; @DateTime.Now.Year
+                                | Designed by <a rel="sponsored" href="#" target="_blank">Shiba9duoi</a>
+                            </p>
+                          <div class="text-right">
+                        <ul class="list-inline text-left footer-icons">
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="#">
+                                    <i class="fa-brands fa-facebook fa-lg fa-fw"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="#">
+                                    <i class="fa-brands fa-instagram fa-lg fa-fw"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="#">
+                                    <i class="fa-brands fa-twitter fa-lg fa-fw"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="#">
+                                    <i class="fa-brands fa-linkedin fa-lg fa-fw"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+        <!-- Scripts -->
+           <!-- Core Vendors JS -->
+    <script src="~/lib/bootstrap/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/lib/bootstrap/Scripts/modernizr-2.8.3.js"></script>
+    <script src="~/lib/bootstrap/Scripts/jquery.validate.js"></script>
+    <script src="~/lib/bootstrap/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/Scripts/toastr.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts",required:false)
+</body>
+ <script>
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function () {
+            var currentScrollPos = window.pageYOffset;
+            if (prevScrollpos > currentScrollPos) {
+                document.getElementById("navbartop").style.top = "0";
+                document.getElementById("navbarmenu").style.top = "34.8px";
+            } else {
+                document.getElementById("navbartop").style.top = "-35px";
+                document.getElementById("navbarmenu").style.top = "0";
+            }
+            prevScrollpos = currentScrollPos;
+        }
+        $(document).ready(function () {
+
+            $.ajax({
+                url: "@Url.Action("GetMenu","Home")",
+                type: "GET",
+                success: function (results) {
+                    $("#navbarmenu").html("");
+                    $("#navbarmenu").html(results);
+                },
+                error: function (results) {
+                    alert(results.responseText);
+                }
+            })
+            toastr.options = {
+                "closeButton": true
+            };
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        });
+    </script>
+</html>
+@* $("#navbarmenu").load('@Url.Action("GetMenu","Home")');*@

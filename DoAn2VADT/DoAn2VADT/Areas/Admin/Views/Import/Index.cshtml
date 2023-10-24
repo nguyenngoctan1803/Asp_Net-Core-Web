@@ -1,0 +1,85 @@
+﻿@using DoAn2VADT.Database.Entities
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.Import>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Index" + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách nhập hàng : trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-lg-4 text-left">  
+                        <select class="custom-select" id="accid" name="accid" asp-items="ViewBag.AccountId">
+                                <option value="" selected disabled>tất cả</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>Tên người nhập</th>
+                        <th>Tổng tiền</th>
+                        <th>Ngày nhập</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Account.Name</td>
+                                <td>@item.Total</td>
+                                <td>@item.CreatedAt</td>
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-controller="Import" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-controller="Import" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+            $(function () {
+            $("#accid").change(function () {
+                var id = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("Index")',
+                    type: "GET",
+                    data:{
+                       accid: id;
+                    },
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                });
+            });
+        });
+    </script>
+}

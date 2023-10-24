@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style>
+            .pb-100 {
+      padding-bottom: 100px;
+    }
+    .pt-100 {
+      padding-top: 100px;
+    }
+    .mb-100 {
+      margin-bottom: 100px;
+    }
+
+    .section-title {
+      position: relative;
+    }
+    .section-title p {
+      font-size: 16px;
+      margin-bottom: 5px;
+      font-weight: 400;
+    }
+    .section-title h4 {
+      font-size: 40px;
+      font-weight: 600;
+      text-transform: capitalize;
+      position: relative;
+      padding-bottom: 20px;
+      display: inline-block;
+    }
+    .section-title h4::before {
+      position: absolute;
+      content: "";
+      width: 80px;
+      height: 2px;
+      background-color: #d8d8d8;
+      bottom: 0;
+      left: 50%;
+      margin-left: -40px;
+    }
+    .section-title h4::after {
+      position: absolute;
+      content: "";
+      width: 50px;
+      height: 2px;
+      background-color: #FF7200;
+      left: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -25px;
+    }
+    .contact {
+      top:0;
+      position:absolute;
+      background-image: url("../../images/home/maxresdefault.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: 2;
+      color: #fff;
+      left:0;
+      right:0;
+    }
+    .contact-form input,
+    textarea {
+      width: 100%;
+      border: 1px solid #fff;
+      padding: 5px 10px;
+      text-transform: capitalize;
+      margin-top: 15px;
+      background-color: transparent;
+      color: #fff;
+    }
+    .contact:before {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: #333;
+      z-index: -1;
+      opacity: .85;
+    }
+    .single-contact {
+      text-align: left;
+      position: relative;
+      padding-left: 70px;
+      margin-bottom: 50px;
+      margin-top: 10px;
+    }
+    .single-contact i.fa {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+              transform: translateY(-50%);
+      background-color: #FF7200;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border-radius: 3px;
+    }
+    .single-contact h5 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .single-contact p {
+      font-size: 15px;
+      font-weight: 400;
+    }
+    .contact-form input[type="submit"] {
+      background-color: #FF7200;
+      border: 0px;
+      cursor: pointer;
+      font-size: 16px;
+      -webkit-transition: .4s;
+      transition: .4s
+    }
+    .contact-form input[type="submit"]:hover {
+      background-color : #CC5B00;
+    }
+    .contact-form input:hover ,textarea:hover{
+      border-color: #CC5B00
+    }
+    .contact-form input:focus, textarea:focus {
+      border-color: #CC5B00
+    }
+    .contact-form input,textarea {
+        max-width:none;
+    }
+    </style>
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,800,900%7cRaleway:300,400,500,600,700" rel="stylesheet">
+}
+
+
+  <!--Important link source from https://bootsnipp.com/snippets/PDbzb-->
+    <section class="contact pb-100" id="contact">
+         <div class="container pt-100">
+            <div class="row">
+               <div class="col-xl-12 mx-auto text-center">
+                  <div class="section-title mb-50">
+                     <p></p>
+                     <h4>Liên hệ chúng tôi</h4>
+                     <div class="map-section">
+                         <iframe style="border:0; width: 100%; height: 350px;" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6697269761844!2d106.67968337469682!3d10.759917089387812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1b7c3ed289%3A0xa06651894598e488!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBTw6BpIEfDsm4!5e0!3m2!1svi!2s!4v1683968915884!5m2!1svi!2s" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row text-center">
+                  <div class="col-md-8">
+                     <form action="Contact" method="post" class="contact-form">
+                        <div class="row">
+                           <div class="col-xl-6">
+                              <input name="name" class="contact-hover" required type="text" placeholder="Họ tên">
+                              <div class="invalid-feedback">
+                                Doesn't look good!
+                               </div>
+                           </div>
+                           <div class="col-xl-6">
+                              <input name="email" class="contact-hover" required type="email" placeholder="Email">
+                           </div>
+                           <div class="col-xl-6">
+                              <input name="topic" class="contact-hover" type="text" placeholder="Chủ đề">
+                           </div>
+                           <div class="col-xl-6">
+                              <input name="phone" class="contact-hover" required type="tel" pattern="[0-9]{10}" placeholder="Số điện thoại">
+                           </div>
+                           <div class="col-xl-12">
+                              <textarea name="message" placeholder="message" cols="30" rows="5"></textarea>
+                              <input class="contact-hover"type="submit" value="send message">
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="single-contact">
+                        <i class="fa fa-map-marker"></i>
+                        <h5>Address</h5>
+                        <p>Thu Duc, Ho Chi Minh, Viet Nam</p>
+                     </div>
+                     <div class="single-contact">
+                        <i class="fa fa-phone"></i>
+                        <h5>Phone</h5>
+                        <p>(+84) 38 465 9245</p>
+                     </div>
+                     <div class="single-contact">
+                        <i class="fa fa-envelope"></i>
+                        <h5>Email</h5>
+                        <p>Shiba@company.com</p>
+                     </div>
+                  </div>
+            </div>
+         </div>
+      </section>

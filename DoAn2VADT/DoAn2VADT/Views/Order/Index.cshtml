@@ -1,0 +1,392 @@
+﻿@using DoAn2VADT.Database.Entities
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.Order>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Lịch sử đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Đơn hàng</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="input-affix">
+                            <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                            <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <a class="btn btn-danger" asp-action="History"><span>Lịch sử thanh toán</span></a>
+            </div>
+        </div>
+        <div class="table-responsive table-hover">
+           <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Thông tin</th>
+                    <th>Ghi chú</th>
+                    <th>Thanh toán</th>
+                    <th>Tổng tiền</th>
+                     <th>Trạng thái</th>
+                    <th class="text-center" style="min-width:210px">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                                <input type="hidden" id="name-@item.Id" name="name-@item.Id" value="@item.Name" />
+                                <input type="hidden" id="phone-@item.Id" name="phone-@item.Id" value="@item.Phone" />
+                                <input type="hidden" id="address-@item.Id" name="address-@item.Id" value="@item.Address" />
+                                <input type="hidden" id="discount-@item.Id" name="discount-@item.Id" value="@(item.Discount != null ? Convert.ToInt32(item.Discount) : 0)" />
+                                <input type="hidden" id="total-@item.Id" name="total-@item.Id" value="@(item.Total != null ? item.Total?.ToString("n0") : 0) VNĐ" />
+                                <input type="hidden" id="payway-@item.Id" name="payway-@item.Id" value="@(item.PayWay == DoAn2VADT.Shared.PayConst.ONLINE ? "MoMo" : "Thanh toán khi nhận hàng")" />
+                                <input type="hidden" id="paystatus-@item.Id" name="paystatus-@item.Id" value="@(item.PayStatus == DoAn2VADT.Shared.PayStatusConst.DONE ? "Đã thanh toán" : "Chưa thanh toán")" />
+                                <input type="hidden" id="createat-@item.Id" name="createat-@item.Id" value="@item.CreatedAt" />
+                                <input type="hidden" id="shipdate-@item.Id" name="shipdate-@item.Id" value="@(item.ShipDate == null ? "Chưa giao hàng" : item.ShipDate)" />
+                                <input type="hidden" id="receivedate-@item.Id" name="receivedate-@item.Id" value="@(item.ReceiveDate == null ? "Chưa nhận hàng" : item.ReceiveDate)" />
+                                <input type="hidden" id="status-@item.Id" name="status-@item.Id" value="@item.Status" />
+                                <input type="hidden" id="reason-@item.Id" name="reason-@item.Id" value="@item.Reason" />
+                                <tr>
+                                    <td>
+                                           <a href="@Url.Action("Details", new { @id = item.Id })" style="font-size:2.5em;text-decoration:none" title="Xem chi tiết">
+                                                <span class="badge badge-primary rounded-pill d-inline">
+                                            @item.OrderDetails.Count
+                                                </span>
+                                           </a>
+                                    </td>
+                                    <td>
+                                        <p class="mb-1 text-nowrap font-weight-bold">Tên: @item.Name</p>
+                                        <p class="mb-0 text-nowrap">Số Điện Thoại: @item.Phone</p>
+                                    </td>
+                                    <td>
+                                        <p class="mb-1 text-nowrap">Ngày Đặt: @item.CreatedAt</p>
+                                        <p class="mb-0 text-muted">Địa Chỉ: @item.Address</p>
+                                    </td>
+                                    <td>
+                                    @{
+                                        if (@item.PayWay == DoAn2VADT.Shared.PayConst.ONLINE)
+                                        {
+                                                        <p class="mb-1"><span class="badge badge-warning rounded-pill d-inline">MoMo</span></p>
+                                        }
+                                        else if (@item.PayWay == DoAn2VADT.Shared.PayConst.OFFLINE)
+                                        {
+                                                        <p class="mb-1"><span class="badge badge-info rounded-pill d-inline">Thanh toán khi nhận hàng</span></p>
+                                        }
+                                        if (@item.PayStatus == DoAn2VADT.Shared.PayStatusConst.DONE)
+                                        {
+                                                         <p class="mb-0"><span class="badge badge-success rounded-pill d-inline">Đã thanh toán</span></p>
+                                        }
+                                        else if (@item.PayStatus == DoAn2VADT.Shared.PayStatusConst.NODONE)
+                                        {
+                                                         <p class="mb-0"><span class="badge badge-danger rounded-pill d-inline">Chưa thanh toán</span></p>
+                                        }
+                                    }
+                                    </td>
+
+                                     <td class="text-nowrap">
+                                            <p class="mb-1 text-nowrap">@(item.Total != null ? (item.Total?.ToString("n0")) : "0") VNĐ</p>
+                                            <p class="mb-0 text-muted text-nowrap">Giảm giá: @(item.Discount != null ? (item.Discount?.ToString("n0") + " VNĐ") : "Không")</p>
+                                     </td>
+                                     <td>
+                                    @{
+                                        if (ViewData["SubStatus"] != null)
+                                        {
+                                            var subStatus = (List<SubStatus>)ViewData["SubStatus"];
+                                            <span class="badge badge-@(subStatus.FirstOrDefault(x=>x.Code == item.Status).Color) rounded-pill d-inline">@(subStatus.FirstOrDefault(x => x.Code == item.Status).SubString)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-light rounded-pill d-inline">Không có thông tin</span>
+                                        }
+
+                                    }
+                                     </td>
+                                        <td class="text-center">
+                                    @{
+                                        if (((List<string>)ViewData["StatusUpdate"]).Contains(item.Status))
+                                        {
+                                              <button data-orderid="@item.Id" class="btn btn-sm btn-primary px-2 edit">
+                                                   <i class="fa fa-solid fa-pen-to-square"></i>
+                                              </button>
+                                        }
+                                    }                            
+                                        <button data-orderid="@item.Id" class="btn btn-sm btn-warning px-2 detail">
+                                            <i class="fa fa-solid fa-circle-info"></i>
+                                        </button>
+                                    @{
+                                        if (((List<string>)ViewData["StatusCancel"]).Contains(item.Status))
+                                        {
+                                             <button data-orderid="@item.Id" class="btn btn-sm px-2 btn-danger cancel">
+                                                  <i class="fa-solid fa-ban mr-1"></i>Hủy
+                                             </button>
+                                        }
+                                    }
+                                    </td>
+                                </tr>
+                        }
+
+                    }
+
+            </tbody>
+        </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("Edit")">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cập nhật đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-width:none !important;">
+                    <input id="editid" type="hidden" class="form-control" required name="id" />
+                    <input id="edittotal" type="hidden" class="form-control"  name="total" />
+                    <div class="form-group nameorder">
+                        <label>Tên người nhận</label>
+                        <input id="editname" type="text" class="form-control" required name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input id="editphone" type="tel" class="form-control" required pattern="[0-9]{10}" name="phone" />
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input id="editaddress" type="text" class="form-control" required name="address" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" id="submitbutton" value="Xác nhận">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal detail -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-width:none !important;">
+                    <input id="detailid" type="hidden" class="form-control" required name="id" />
+                    <div class="form-group">
+                        <label>Tên người nhận</label>
+                        <input id="detailname" type="text" class="form-control" readonly name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input id="detailphone" type="text" class="form-control" readonly name="phone" />
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input id="detailaddress" type="text" class="form-control" readonly name="address" />
+                    </div>
+                    <div class="form-group">
+                        <label>Giảm giá</label>
+                        <input id="detaildiscount" type="text" readonly class="form-control" name="discount" />
+                    </div>
+                     <div class="form-group">
+                        <label>Hình thức thanh toán</label>
+                        <input id="detailpayway" type="text" class="form-control" readonly name="payway" />
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái thanh toán</label>
+                        <input id="detailpaystatus" type="text" readonly class="form-control" name="paystatus" />
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày đặt hàng</label>
+                        <input id="detailcreateat" type="text" readonly class="form-control" name="createat" />
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày nhận hàng</label>
+                        <input id="detailreceivedate" type="text" readonly class="form-control" name="receivedate" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tổng tiền</label>
+                        <input id="detailtotal" type="text" readonly class="form-control" name="total" />
+                    </div>
+                   <div class="form-group">
+                        <label>Trạng thái đơn hàng</label>
+                        <select id="detailstatus" name="status" disabled class="form-control" style="min-width: 200px;" asp-items="ViewBag.StatusList">
+                               <option value="" disabled>Chọn trạng thái</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="reason-div">
+                        <label>Lý do hủy</label>
+                        <input id="detailreason" type="text" readonly class="form-control" name="reason" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+        </div>
+    </div>
+</div>
+<!-- Modal cancel-->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content text-center">
+            <form method="post" action="@Url.Action("Cancel")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hủy đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-light badge-light rounded-pill">
+                            <input type="radio" name="reason" id="option1" value="Muốn đổi sản phẩm khác"> Muốn đổi sản phẩm khác
+                          </label>
+                          <label class="btn btn-light badge-light rounded-pill">
+                            <input type="radio" name="reason" id="option2" value="Không còn nhu cầu nữa"> Không còn nhu cầu nữa
+                          </label>
+                          <label class="btn btn-light badge-light rounded-pill">
+                            <input type="radio" name="reason" id="option3"value="Shop không đủ uy tín"> Shop không đủ uy tín
+                          </label>
+                          <label class="btn btn-light badge-light rounded-pill" >
+                            <input type="radio" name="reason" id="option4" value="@DoAn2VADT.Shared.Const.REFUSEREASON"> Lý do khác
+                          </label> 
+                    </div>
+                     <div class="form-group collapse mt-3" id="myCollapse">
+                            <input id="refusereason" type="text" class="form-control" name="refusereason" placeholder="Nhập lý do..." />
+                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>                               
+                    <input type="hidden" id="cancelid" name="id" />
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+        <script>
+            $(document).ready(function () {
+                    //toggle
+                    $("#option1").click(function(){
+                        $("#myCollapse").collapse("hide");
+                    });
+                     $("#option2").click(function(){
+                        $("#myCollapse").collapse("hide");
+                    });
+                     $("#option3").click(function(){
+                        $("#myCollapse").collapse("hide");
+                    });
+                    $("#option4").click(function(){
+                        $("#myCollapse").collapse("show");
+                    });
+                    //edit
+                    $(".edit").click(function (event) {
+                        var orderid = $(this).attr("data-orderid");
+                        var name = $("#name-" + orderid).val();
+                        var phone = $("#phone-" + orderid).val();
+                        var address = $("#address-" + orderid).val();
+
+                        $("#editid").val(orderid);
+                        $("#editname").val(name);
+                        $("#editphone").val(phone);
+                        $("#editaddress").val(address);
+                        //submit
+                        document.getElementById("submitbutton").type = "submit";
+                        $("#editModal").modal();
+                    });
+                //detail
+                    $(".detail").click(function (event) {
+                        var orderid = $(this).attr("data-orderid");
+                        var name = $("#name-" + orderid).val();
+                        var phone = $("#phone-" + orderid).val();
+                        var address = $("#address-" + orderid).val();
+                        var discount = $("#discount-" + orderid).val();
+                        var payway = $("#payway-" + orderid).val();
+                        var paystatus = $("#paystatus-" + orderid).val();
+                        var createat = $("#createat-" + orderid).val();
+                        var receivedate = $("#receivedate-" + orderid).val();
+                        var total = $("#total-" + orderid).val();
+                        var status = $("#status-" + orderid).val();
+                        var reason = $("#reason-" + orderid).val();
+
+                        $("#detailid").val(orderid);
+                        $("#detailname").val(name);
+                        $("#detailphone").val(phone);
+                        $("#detailaddress").val(address);
+                        $("#detaildiscount").val(discount);
+                        $("#detailpayway").val(payway);
+                        $("#detailpaystatus").val(paystatus);
+                        $("#detailcreateat").val(createat);
+                        $("#detailreceivedate").val(receivedate);
+                        $("#detailtotal").val(total);
+                        $("#detailstatus").val(status);
+                        var element = document.getElementById("reason-div");
+                        if(status == "@DoAn2VADT.Shared.StatusConst.CANCEL"){
+                            element.style.display = "block";
+                        }
+                        else{
+                            element.style.display = "none";
+                        }
+
+                        $("#detailreason").val(reason);
+
+                        //modal
+                        $("#detailModal").modal();
+                        });
+                  // cancel
+                        $(".cancel").click(function (event) {
+                            var cancelid = $(this).attr("data-orderid");
+                            $("#cancelid").val(cancelid);
+                            $("#cancelModal").modal();
+                        });        
+                        ///////
+                $("#keyword").keyup(function () {
+                    var strkeyword = $('#keyword').val();
+                    $.ajax({
+                        url: '/Search/FindBanHang/',
+                        datatype: "json",
+                        type: "POST",
+                        data: { keyword: strkeyword },
+                        async: true,
+                        success: function (results) {
+                            $("#records_table").html("");
+                            $("#records_table").html(results);
+                        },
+                        error: function (xhr) {
+                            alert('error');
+                        }
+                    });
+                });
+            });
+        </script>
+    }

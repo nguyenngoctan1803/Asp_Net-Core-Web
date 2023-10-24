@@ -1,0 +1,87 @@
+﻿@model DoAn2VADT.Database.Entities.Product
+
+@{
+    ViewData["Title"] = "Xóa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<form asp-controller="Product" asp-action="Delete" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="page-header">
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                <a asp-controller="Product" asp-action="Index" class="breadcrumb-item">Sản phẩm</a>
+                <span class="breadcrumb-item active">Xóa</span>
+            </nav>
+        </div>
+    </div>
+    <div class="card-header">
+        <div class=" row">
+            <div class=" col-md-6">
+                <strong>Thông tin sản phẩm</strong>
+            </div>
+            <div class=" col-md-6 text-right">
+                <div class="text-right">
+                    <a class=" btn btn-primary fas fa-undo-alt" asp-action="Index"></a>
+                    <button class=" btn btn-danger far fa-trash-alt" type="submit"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold">Tên sản phẩm</label>
+                    <div class="form-control" asp-for="TenSach"> @Html.DisplayFor(model => model.Name) </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" >Màu sắc</label>
+                    <div class="form-control"> @Html.DisplayFor(model => model.Color) </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold">Thương hiệu</label>
+                    <div class="form-control">@Html.DisplayFor(model => model.Brand.Name)</div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold">Danh mục</label>
+                    <div class="form-control">@Html.DisplayFor(model => model.Category.Name)</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold">Giá bán</label>
+                    <div class="form-control">@Html.DisplayFor(model => model.Price)</div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" for="ShortDesc">Số lượng</label>
+                    <div class="form-control">@Html.DisplayFor(model => model.Quantity)</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="font-weight-semibold">Giảm giá</label>
+                    <div class="form-control">@Html.DisplayFor(model=>model.Discount)</div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="font-weight-semibold" for="ShortDesc">Ngày tạo</label>
+                    <div class="form-control">@Html.DisplayFor(model => model.CreatedAt)</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-semibold">Mô tả</label>
+                <div class="form-control">@Html.Raw(Model.Description)</div>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-semibold">Ảnh sản phẩm</label>
+                <div class="form-control">
+                    <img width="auto" height="200" src="~/images/product/@Model.Image" alt="@Model.Name" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

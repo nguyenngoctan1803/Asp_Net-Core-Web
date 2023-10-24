@@ -1,0 +1,86 @@
+﻿@model DoAn2VADT.Database.Entities.Account
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+        <!-- Main content -->
+        <section class="content my-2">
+            <form asp-action="Edit">
+                <div class="page-header">
+                    <div class="header-sub-title">
+                        <nav class="breadcrumb breadcrumb-dash">
+                            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                            <a asp-area="Admin" asp-controller="Account" asp-action="Index" class="breadcrumb-item">Danh sách </a>
+                            <span class="breadcrumb-item active">Edit</span>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Default box -->
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class=" col-md-6">
+                        </div>
+                        <div class=" col-md-6 text-right">
+                            <a class=" btn btn-success fas fa-undo-alt" asp-action="Index"></a>
+                            <button class="btn btn-primary" type="submit"><i class="fas fas fa-save mr-1"></i>Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="CreatedAt" />
+                    <input type="hidden" asp-for="UpdatedAt" />
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                         <div class="form-group col-md-6">
+                            <label asp-for="Name" class="control-label">Tên người sử dụng</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="UserName" class="control-label">Tên đăng nhập</label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class=" row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Password" class="control-label">Password</label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Quyền </label>
+                            @if (ViewData["EditAccount"].ToString() == "EditProfileAdmin" || ViewData["EditAccount"].ToString() == "EditProfileUser")
+                            {
+                                <select disabled="true" class="custom-select" asp-for="Role" style="min-width: 200px;">
+                                    <option value="" disabled selected>Chọn quyền</option>
+                                    <option value="1">Admin</option>
+                                    <option value="0">User</option>
+                                </select>
+                            }
+                            @if (ViewData["EditAccount"].ToString() == "EditAccountAdmin")
+                            {
+                                 <select class="custom-select" asp-for="Role" style="min-width: 200px;">
+                                        <option value="" disabled selected>Chọn quyền</option>
+                                        <option value="1">Admin</option>
+                                        <option value="0">User</option>
+                                 </select>    
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+            </form>
+        </section>
+    </div>
+
+    <!-- /.content -->
+</div>

@@ -1,0 +1,120 @@
+﻿@model DoAn2VADT.Shared.Menu
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+@using DoAn2VADT.Shared;
+    <div class="container nav-container">
+        <a class="navbar-brand font-weight-bold" href="@Url.Action("Index","Home")"><i class="fa-2x fa-fw fa-solid fa-laptop-code fa-beat"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold nav-menu" href="@Url.Action("Index","Home")">Trang chủ</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle font-weight-bold nav-menu" href="#" data-toggle="dropdown" id="navbarDropdownMenuLink" role="button"
+                       data-mdb-toggle="dropdown" aria-expanded="false">
+                        Sản phẩm
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fa-solid fa-grip mr-2" ></i>Danh mục
+                            </a>
+                            <ul class="dropdown-menu dropdown-submenu">
+                                @{ 
+                                    var categories = Model.Categories.ToList();
+                                    foreach (var item in categories)
+                                    {
+                                          <li>
+                                                <a class="dropdown-item"href="@Url.Action("Index", "Product", new {categoryid = item.Id})">@item.Name</a>
+                                          </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fa-solid fa-square-poll-vertical mr-2"></i>Thương hiệu
+                            </a>
+                             <ul class="dropdown-menu dropdown-submenu">
+                               @{ 
+                                    var branchs = Model.Brands.ToList();
+                                    foreach (var item in branchs)
+                                    {
+                                          <li>
+                                                <a class="dropdown-item"href="@Url.Action("Index", "Product", new {brandid = item.Id})">@item.Name</a>
+                                           </li>
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="~/Product">Tất cả sản phẩm</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold nav-menu" href="@Url.Action("About","Home")">Về chúng tôi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold nav-menu" href="@Url.Action("Contact","Home")">Liên hệ</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <form class="form-inline my-2 my-lg-0 mr-3 menu-search" action="@Url.Action("Index","Product")" method="get">
+                        <input type="hidden" value="@TempData["categoryid"]" name="categoryid"/>
+                        <input type="hidden" value="@TempData["brandid"]" name="brandid"/>
+                        <input style="width: 250px;" class="form-control mr-sm-2" type="search" name="search" value="@TempData["search"]" placeholder="Tìm kiếm" aria-label="Search">
+                        <button class="btn btn-outline-light my-sm-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </li>
+                <li class="nav-item justify-content-center">
+                    <a class="nav-link font-weight-bold" href="@Url.Action("Index", "Cart")" title="Giỏ hàng">
+                        <i class="fa-solid fa-bag-shopping mr-1"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="@Url.Action("Index", "Order")" title="Lịch sử mua hàng">
+                        <i class="fa-solid fa-list-check mr-1"></i>
+                    </a>
+                </li>
+                @{
+                    @if (String.IsNullOrEmpty(Accessor.HttpContext.Session.GetString(Const.USERSESSION)))
+                    {
+                        <li class="nav-item">
+                             <a class="nav-link font-weight-bold" href="@Url.Action("Login", "Home")" title="Đăng nhập">
+                             <i class="fa-solid fa-user"></i>
+                             </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-user-check"></i>
+                            </a>
+                            <div class="dropdown-menu" style="font-size: 0.8em;">
+                                <a class="dropdown-item text-center pl-2 pb-1" href="@Url.Action("Profile", "Home")"><i class="fa-solid fa-circle-info mr-1"></i>Thông tin tài khoản</a>
+                                <a class="dropdown-item pl-2" href="@Url.Action("Logout", "Home")"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>Đăng xuất</a>
+                            </div>        
+                        </li>
+                   
+                    }
+                   
+                }
+
+            </ul>
+        </div>
+    </div>
+
+
+@section Scripts{
+    <script>
+         
+    </script>
+}

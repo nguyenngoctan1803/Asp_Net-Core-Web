@@ -1,0 +1,104 @@
+﻿<div class="side-nav">
+    <div class="side-nav-inner">
+        <ul class="side-nav-menu scrollable">
+            
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Dashboard">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-dashboard"></i>
+                    </span>
+                    <span class="title">Dashboard</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+            </li>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray;margin:0 10px 0 0">
+            <li class="nav-item">
+                <a asp-controller="Order" asp-action="Index">
+                    <span class="icon-holder">
+                        <i class="fa-solid fa-rectangle-list"></i>
+                    </span>
+                    <span class="title">Quản lý đơn hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="Sell" asp-action="Index">
+                    <span class="icon-holder">
+                        <i class="fa-solid fa-bell-concierge"></i>
+                    </span>
+                    <span class="title">Bán hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a  asp-action="Index" asp-controller="Product">
+                    <span class="icon-holder">
+                        <i class="fa-solid fa-laptop"></i>
+                    </span>
+                    <span class="title">Quản lý sản phẩm</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a  asp-action="Index" asp-controller="Import">
+                    <span class="icon-holder">
+                        <i class="fas fa-ambulance"></i>
+                    </span>
+                    <span class="title">Nhập kho</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="Category">
+                    <span class="icon-holder">
+                        <i class="fas fa-tasks"></i>
+                    </span>
+                    <span class="title">Quản lý mặt hàng </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="Brand" asp-action="Index">
+                    <span class="icon-holder">
+                        <i class="fa-solid fa-medal"></i>
+                    </span>
+                    <span class="title">Quản lý thương thiệu</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a asp-controller="Account" asp-action="Index">
+                    <span class="icon-holder">
+                       <i class="fa-solid fa-user-check"></i>
+                    </span>
+                    <span class="title">Quản lý User</span>
+                </a>
+            </li>
+             <li class="nav-item">
+                <a asp-controller="Customer" asp-action="Index">
+                    <span class="icon-holder">
+                        <i class="fas fa-user-friends"></i>
+                    </span>
+                    <span class="title">Quản lý khách hàng</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a  asp-action="Index" asp-controller="ThongKe">
+                    <span class="icon-holder">
+                        <i class="fas fa-donate"></i>
+                    </span>
+                    <span class="title">Thống kê doanh thu</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="ThongKeTonKho">
+                    <span class="icon-holder">
+                        <i class="fas fa-x-ray"></i>
+                    </span>
+                    <span class="title">Thống kê tồn kho</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

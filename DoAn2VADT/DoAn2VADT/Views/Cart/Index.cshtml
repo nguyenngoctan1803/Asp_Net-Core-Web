@@ -1,0 +1,441 @@
+﻿@using AspNetCoreHero.ToastNotification.Abstractions
+@inject INotyfService notyfService
+@model List<DoAn2VADT.Database.Entities.Cart>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    if (TempData["UpdateQuantity"] != null)
+    {
+        notyfService.Success(TempData["UpdateQuantity"].ToString());
+    }
+    if (TempData["ErrorQuantity"] != null)
+    {
+        notyfService.Error(TempData["ErrorQuantity"].ToString());
+    }
+
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Giỏ hàng</span>
+        </nav>
+    </div>
+</div>
+
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                <div class="card">
+                    @foreach (var item in Model)
+                    {
+                                <div class="row p-2">
+                                    <div class="col-md-6">
+                                            <img src="~/images/product/@item.Product.Image" alt="@item.Product.Name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="product-dtl">
+                                            <div class="product-info">
+                                                <div class="product-name"><h5>@item.Product.Name</h5></div>
+                                        @{
+                                            if (item.Product.Discount != null)
+                                            {
+                                                                <div class="product-price-discount"><span>@((item.Product.Price - item.Product.Discount)?.ToString("n0")) VNĐ</span><span class="line-through">@((item.Product.Price)?.ToString("n0")) VNĐ</span></div>
+                                            }
+                                            else
+                                            {
+                                                                <div class="product-price-discount"><span>@((item.Product.Price)?.ToString("n0")) VNĐ</span><span class="line-through"></span></div>
+                                            }
+                                        }
+                                            </div>
+                                            <div class="description text-muted">Kho: @item.Product.Quantity</div>
+                                            <div class="product-count" style="margin-bottom:0px !important">
+                                                <div class="display-flex">  
+                                                    <div class="qtyminus decre" data-productid="@item.Product.Id">-</div>
+                                                    <input id="@($"quantity-{item.Product.Id}")" type="text" name="quantity" readonly value="@item.Quantity" class="qty">
+                                                    <div class="qtyplus incre" data-productid="@item.Product.Id">+</div>
+                                                    <div class="ml-auto">
+                                                            <a href="@Url.Action("RemoveCart", "Cart", new { productid = item.Product.Id })" class="btn btn-danger text-center"><i class="fa-solid fa-trash mr-2"></i>Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    }
+                    </div> <!-- card.// -->
+                <div class="alert alert-success mt-3">
+                    <p class="icontext"><i class="fa-solid fa-truck-fast fa-bounce"></i> Giao hàng nhanh trong 1 - 2 ngày</p>
+                </div>
+            </main> <!-- col.// -->
+            <aside class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Have coupon?</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="" placeholder="Coupon code">
+                                    <span class="input-group-append">
+                                        <button class="round-black-btn ml-2 mt-0 px-3">Apply</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- card-body.// -->
+                </div> <!-- card .// -->
+                <div class="card">
+                    <div class="card-body">
+
+                        <dl>
+
+                            <dt>Tổng tiền:</dt>
+                            @{
+                                decimal? total = 0;
+                                if (Model.Count > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        if (item.Product.Discount != null)
+                                        {
+                                            total += (item.Product.Price - item.Product.Discount) * item.Quantity;
+                                        }
+                                        else
+                                        {
+                                            total += item.Product.Price * item.Quantity;
+                                        }
+                                    }
+                                    <dd class="text-right">@(total?.ToString("n0")) VNĐ</dd>
+                                }
+                            }
+                            </dl>
+
+                        <dl>
+                            <dt>Phí giao hàng:</dt>
+                            <dd class="text-right">@(Model.Count > 0 ? "30.000VNĐ" : "")</dd>
+                        </dl>
+                        <dl>
+                            <dt>Tiền phải trả:</dt>
+                            @{
+                                if (total > 0)
+                                {
+                                            <dd class="text-right  h5"><strong>@((total + 30000)?.ToString("n0")) VNĐ</strong></dd>
+                                }
+                                else
+                                {
+                                            <dd class="text-right  h5"><strong></strong></dd>
+                                }
+                            }
+                        </dl>
+                        <hr>               
+                        
+                            @{
+                                if (Model.Count > 0)
+                                {
+                                     <div class="d-flex justify-content-around" style="font-size:0.8rem;">
+                                           <a href="product" class="round-black-btn p-2 w-50 text-center"><i class="fa-solid fa-cart-plus mr-2"></i>Tiếp tục mua sắm</a>
+                                           <a href="@Url.Action("CheckOut","Cart")" class="round-black-btn p-2 ml-2 w-50 text-center">Thanh toán giỏ hàng<i class="fa-solid fa-money-check-dollar ml-1"></i></a>
+                                      </div>
+                                }
+                                else
+                                {
+                                      <div class="justify-content-around text-center" style="font-size:0.8rem;">
+                                          <p class="w-100 text-center">Giỏ hàng trống! Hãy thêm sản phẩm vào giỏ hàng</p>
+                                          <a href="product" class="round-black-btn p-2 w-50 text-center"><i class="fa-solid fa-cart-plus mr-2"></i>Tiếp tục mua sắm</a>
+                                      </div>
+                                }
+                            }
+                      
+                    </div> <!-- card-body.// -->
+                </div> <!-- card .// -->
+            </aside> <!-- col.// -->
+        </div>
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name bg padding-y">
+    <div class="container">
+        <h6>Payment and refund policy</h6>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat.
+        </p>
+    </div><!-- container // -->
+</section>
+<!-- ========================= SECTION  END// ========================= -->
+@section scripts{
+        <script>
+            $(document).ready(function () {
+
+                $(".qtyminus").on("click", function () {
+                    var productid = $(this).attr("data-productid");
+                    var quantity = $("#quantity-" + productid).val();
+                    if ($.isNumeric(quantity)) {
+                        if (parseInt(quantity) - 1 > 0) { quantity--; }
+                        $("#quantity-" + productid).val(quantity)
+                    }
+                })
+                $(".qtyplus").on("click", function () {
+                    var productid = $(this).attr("data-productid");
+                    var quantity = $("#quantity-" + productid).val();
+                    if ($.isNumeric(quantity)) {
+                        $("#quantity-" + productid).val(parseInt(quantity) + 1);
+                    }
+                });
+                $(".decre").click(function (event) {
+                      event.preventDefault();
+                      var productid = $(this).attr("data-productid");
+                      var quantity = $("#quantity-" + productid).val();
+                      $.ajax({
+                          type: "POST",
+                          url:"@Url.Action("UpdateCart")",
+                          data: {
+                              productid: productid,
+                              quantity:quantity
+                          },
+                          success: function (result) {
+                             window.location.reload();
+                          }
+                      });
+                });
+                 $(".incre").click(function (event) {
+                      event.preventDefault();
+                      var productid = $(this).attr("data-productid");
+                      var quantity = $("#quantity-" + productid).val();
+                      $.ajax({
+                          type: "POST",
+                          url:"@Url.Action("UpdateCart")",
+                          data: {
+                              productid: productid,
+                              quantity:quantity
+                          },
+                          success: function (result) {
+                              window.location.reload();
+                          }
+                      });
+                });
+            });
+        </script>
+}
+@section Styles{
+        <style>
+            div img {
+                display: block;
+                max-height: 220px;
+                min-height: 200px;
+                min-width: 100%;
+                width: auto;
+                border-radius: 0.7em !important;
+                background-size: cover;
+                object-fit: cover;
+            }
+            .product-dtl {
+                display: block;
+                max-height: 220px;
+                min-height: 220px;
+            }
+
+            div select {
+                background-color: black;
+                color: lightcyan !important;
+            }
+
+            div label {
+                font-weight: bold !important;
+            }
+
+            .center-screen {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                min-height: 100vh;
+            }
+
+            .pd-wrap {
+                padding: 40px 0;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .heading-section {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .sub-heading {
+                font-family: 'Poppins', sans-serif;
+                font-size: 12px;
+                display: block;
+                font-weight: 600;
+                color: #2e9ca1;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .heading-section h2 {
+                font-size: 32px;
+                font-weight: 500;
+                padding-top: 10px;
+                padding-bottom: 15px;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .user-img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                position: relative;
+                min-width: 80px;
+                background-size: 100%;
+            }
+
+            .carousel-testimonial .item {
+                padding: 30px 10px;
+            }
+
+            .name {
+                margin-bottom: 0;
+                line-height: 14px;
+                font-size: 17px;
+                font-weight: 500;
+            }
+
+            .position {
+                color: #adadad;
+                font-size: 14px;
+            }
+
+
+            .round-black-btn {
+                border-radius: 4px;
+                background: #212529;
+                color: #fff;
+                padding: 7px 45px;
+                display: inline-block;
+                margin-top: 20px;
+                border: solid 2px #212529;
+                transition: all 0.5s ease-in-out 0s;
+            }
+
+                .round-black-btn:hover,
+                .round-black-btn:focus {
+                    background: transparent;
+                    color: #212529;
+                    text-decoration: none;
+                }
+
+
+            .mb-20 {
+                margin-bottom: 20px;
+            }
+
+            .form-control {
+                font-size: 14px;
+            }
+
+            input.form-control {
+                height: 40px;
+            }
+
+            textarea.form-control {
+                resize: none;
+            }
+
+            .col-md-6 .select {
+                background-color: black;
+            }
+            .product-thumb .item img {
+                height: 100px;
+            }
+
+            .product-name {
+                font-weight: 500;
+                line-height: 22px;
+            }
+
+            .product-price-discount {
+                font-weight: bold;
+                clear: both;
+            }
+
+                .product-price-discount span.line-through {
+                    text-decoration: line-through;
+                    margin-left: 20px;
+                    color: #a5a5a5;
+                }
+                .product-count .qtyminus,
+                .product-count .qtyplus {
+                    width: 34px;
+                    height: 34px;
+                    background: #212529;
+                    text-align: center;
+                    font-size: 19px;
+                    line-height: 36px;
+                    color: #fff;
+                    cursor: pointer;
+                }
+
+                .product-count .qtyminus {
+                    border-radius: 3px 0 0 3px;
+                }
+
+                .product-count .qtyplus {
+                    border-radius: 0 3px 3px 0;
+                }
+
+                .product-count .qty {
+                    width: 60px;
+                    height:34px;
+                    text-align: center;
+                }
+            .display-flex {
+                display: flex;
+            }
+            .round-black-btn {
+                border-radius: 4px;
+                background: #212529;
+                color: #fff;
+                padding: 7px 45px;
+                display: inline-block;
+                margin-top: 20px;
+                border: solid 2px #212529;
+                transition: all 0.5s ease-in-out 0s;
+            }
+
+                .round-black-btn:hover,
+                .round-black-btn:focus {
+                    background: transparent;
+                    color: black;
+                    text-decoration: none;
+                }
+            dl {
+                width: 100%;
+                overflow: hidden;
+                padding: 0;
+                margin: 0
+            }
+
+            dt {
+                float: left;
+                width: 50%;
+                /* adjust the width; make sure the total of both is 100% */
+                padding: 0;
+                margin: 0
+            }
+
+            dd {
+                float: left;
+                width: 50%;
+                /* adjust the width; make sure the total of both is 100% */
+                padding: 0;
+                margin: 0
+            }
+        </style>
+}

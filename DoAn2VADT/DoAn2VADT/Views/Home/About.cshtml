@@ -1,0 +1,267 @@
+﻿
+@{
+    ViewData["Title"] = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style>
+
+    h2 {
+        font-size: 50px;
+        font-weight: 300;
+        margin-bottom: 10px;
+        line-height: 50px;
+    }
+    .highlight {
+        color: #2ac5ed;
+    }
+    #content {
+        padding: 70px 0;
+    }
+    #content .features-list {
+        padding-top: 35px;
+    }
+    .features-list .feature-block {
+        margin-bottom: 18px;
+    }
+    .features-list .feature-block .ico {
+        font-size: 37px;
+        line-height: 70px;
+        width:70px;
+        height: 70px;
+        background: #5accff;
+        display: inline-block;
+        border-radius: 50%;
+        color: #FFFFFF;
+        margin-bottom: 10px;
+    }
+    .features-list .feature-block.bottom-line .ico {
+        width: auto;
+        height: auto;
+        background: transparent;
+        color: #5accff;
+        text-align: center;
+        font-size: 41px;
+        vertical-align: top;
+        margin-top: -10px;
+    }
+    .features-list .feature-block.bottom-line .fa-github {
+        font-size: 50px;
+    }
+    .features-list .feature-block.bottom-line .fa-dashboard {
+        font-size: 45px;
+        margin-top: -15px;
+    }
+    .features-list .feature-block.bottom-line .ico {
+        float: left;
+        margin-right: 15px;
+        margin-left: 21px;
+    }
+    .features-list .feature-block.bottom-line .features-content {
+        padding-right: 15px;
+        display: table;
+    }
+    .features-list .feature-block.bottom-line .features-content .name {
+        margin-bottom: 5px;
+    }
+    .features-list .feature-block.bottom-line .features-content .subname {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    .features-list .feature-block .name {
+        font-size: 20px;
+        line-height: 1.25em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .features-list .feature-block .text {
+        font-size: 12px;
+        line-height: normal;
+        margin-bottom: 15px;
+    }
+
+    </style>
+
+}
+@section scripts{
+    
+}
+
+  <div class="row align-items-center">
+        <div class="col-lg-6 col-md-6 order-2 order-md-1 mt-4 pt-2 mt-sm-0 opt-sm-0">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-6">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 mt-4 pt-2">
+                            <div class="card work-desk rounded border-0 shadow-lg overflow-hidden">
+                                <img src="~/images/contact/dell.jpg" class="img-fluid" alt="Image" />
+                                <div class="img-overlay bg-dark"></div>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-12">
+                            <div class="mt-4 pt-2 text-right">
+                                <a href="javascript:void(0)" class="btn btn-info">Read More <i class="mdi mdi-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end col-->
+
+                <div class="col-lg-6 col-md-6 col-6">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card work-desk rounded border-0 shadow-lg overflow-hidden">
+                                <img src="~/images/contact/macbook.jpg" class="img-fluid" alt="Image" />
+                                <div class="img-overlay bg-dark"></div>
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-12 col-md-12 mt-4 pt-2">
+                            <div class="card work-desk rounded border-0 shadow-lg overflow-hidden">
+                                <img src="~/images/contact/zenbook.jpg" class="img-fluid" alt="Image" />
+                                <div class="img-overlay bg-dark"></div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+        </div>
+        <!--end col-->
+
+        <div class="col-lg-6 col-md-6 col-12 order-1 order-md-2">
+            <div class="section-title ml-lg-5">
+                <h5 class="text-custom font-weight-normal mb-3">Về Chúng Tôi</h5>
+                <h4 class="title mb-4">
+                    Our mission is to <br />
+                    make your life easier.
+                </h4>
+                <p class="text-muted mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit quod debitis praesentium pariatur temporibus ipsa, cum quidem obcaecati sunt?</p>
+
+                <div class="row">
+                    <div class="col-lg-6 mt-4 pt-2">
+                        <div class="media align-items-center rounded shadow p-3">
+                            <i class="fa fa-play h4 mb-0 text-custom"></i>
+                            <h6 class="ml-3 mb-0"><a href="javascript:void(0)" class="text-dark">Responsive</a></h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mt-4 pt-2">
+                        <div class="media align-items-center rounded shadow p-3">
+                            <i class="fa fa-file-download h4 mb-0 text-custom"></i>
+                            <h6 class="ml-3 mb-0"><a href="javascript:void(0)" class="text-dark">Free Download</a></h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mt-4 pt-2">
+                        <div class="media align-items-center rounded shadow p-3">
+                            <i class="fa fa-user h4 mb-0 text-custom"></i>
+                            <h6 class="ml-3 mb-0"><a href="javascript:void(0)" class="text-dark">Support</a></h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mt-4 pt-2">
+                        <div class="media align-items-center rounded shadow p-3">
+                            <i class="fa fa-image h4 mb-0 text-custom"></i>
+                            <h6 class="ml-3 mb-0"><a href="javascript:void(0)" class="text-dark">Development</a></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end col-->
+    </div>
+    <!--enr row-->
+    <section id="content" class="current">
+     <div class="row text-center">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h2>Sản Phẩm Chính Hãng</h2>
+                <h2 style="font-size: 60px;line-height: 60px;margin-bottom: 20px;font-weight: 900;">Với <span class="highlight">Đa Dạng Thương Hiệu</span></h2>
+                <p>All the features you need to create an amazing website.</p>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-lg-offset-1 col-sm-12 col-md-12 col-lg-12">
+                <div class="features-list">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <div class="feature-block bootdey" style="visibility: visible;">
+                                <div class="ico fa fa-magic"></div>
+                                <div class="name">
+                                    Premium Design
+                                </div>
+                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames </div>
+                                <div class="more">
+                                    <a href="#" class="btn btn-default btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <div class="feature-block bootdey" style="visibility: visible;">
+                                <div class="ico fa fa-magnet"></div>
+                                <div class="name">
+                                    SEO Optimized
+                                </div>
+                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames </div>
+                                <div class="more">
+                                    <a href="#" class="btn btn-default btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <div class="feature-block bootdey" style="visibility: visible;">
+                                <div class="ico fa fa-gift"></div>
+                                <div class="name">
+                                    Bonus: PSDs Included
+                                </div>
+                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames </div>
+                                <div class="more">
+                                    <a href="#" class="btn btn-default btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <div class="feature-block bootdey" style="visibility: visible;">
+                                <div class="ico fa fa-cubes"></div>
+                                <div class="name">
+                                    Custom UI Elements
+                                </div>
+                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames </div>
+                                <div class="more">
+                                    <a href="#" class="btn btn-default btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <div class="feature-block bootdey" style="visibility: visible;">
+                                <div class="ico fa fa-expand"></div>
+                                <div class="name">
+                                    Fully Responsive
+                                </div>
+                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames </div>
+                                <div class="more">
+                                    <a href="#" class="btn btn-default btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-4">
+                            <div class="feature-block bootdey" style="visibility: visible;">
+                                <div class="ico fa fa-send-o"></div>
+                                <div class="name">
+                                    Contact Form
+                                </div>
+                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames </div>
+                                <div class="more">
+                                    <a href="#" class="btn btn-default btn-sm">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>

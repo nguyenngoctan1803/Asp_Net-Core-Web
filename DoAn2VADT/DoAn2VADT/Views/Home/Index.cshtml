@@ -1,0 +1,233 @@
+﻿@model List<DoAn2VADT.Database.Entities.Product>
+@{
+    ViewData["Title"] = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+  <style>
+    .hero-image {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/slide/banner.jpg");
+      height:250px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      position: relative;
+      max-height:250px;
+    }
+
+    .hero-text {
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+    }
+
+    .hero-text button {
+      border-radius:0.5em;
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 10px 25px;
+      color: black;
+      background-color: #fff;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .hero-text a:hover {
+      background-color: #000;
+      color: #fff;
+    }
+    </style>
+}
+<!-- Start Banner Hero -->
+<div id="template-mo-jassa-hero-carousel" class="carousel slide carousel-fade carousel-dark" data-mdb-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#template-mo-jassa-hero-carousel" data-slide-to="0" class="bg-dark active"></li>
+        <li data-target="#template-mo-jassa-hero-carousel" data-slide-to="1" class="bg-dark"></li>
+        <li data-target="#template-mo-jassa-hero-carousel" data-slide-to="2" class="bg-dark"></li>
+        <li data-target="#template-mo-jassa-hero-carousel" data-slide-to="3" class="bg-dark"></li>
+    </ol>
+    <div class="carousel-inner rounded-lg shadow-lg">
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row p-5 pt-0">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="~/images/slide/home-slider-1.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 pl-4 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1 text-success"><b>Shiba</b> Asp.net</h1>
+                            <h3 class="h2">Lorem Ipsum Lorem Ipsum</h3>
+                            <p>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5 pt-0">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid " src="~/images/slide/home-slider-2.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 pl-4 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">Lorem Ipsum</h1>
+                            <h3 class="h2">Lorem Ipsum Lorem Ipsum</h3>
+                            <p>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5 pt-0">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="~/images/slide/home-slider-3.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 pl-4 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">Lorem Ipsum</h1>
+                            <h3 class="h2">Lorem Ipsum Lorem Ipsum </h3>
+                            <p>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5 pt-0    ">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="~/images/slide/home-slider-4.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 pl-4 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">Lorem Ipsum</h1>
+                            <h3 class="h2">Lorem Ipsum Lorem Ipsum </h3>
+                            <p>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev text-decoration-none w-auto p-3" href="#template-mo-jassa-hero-carousel" role="button" data-slide="prev">
+        <i class="fa-solid fa-chevron-left fa-2x text-muted"></i>
+    </a>
+    <a class="carousel-control-next text-decoration-none w-auto p-3" href="#template-mo-jassa-hero-carousel" role="button" data-slide="next">
+        <i class="fa-solid fa-chevron-right fa-2x text-muted"></i>
+    </a>
+</div>
+<!-- End Banner Hero -->
+<!-- Start Categories of The Month -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1 text-uppercase font-weight-bold">Thương hiệu lớn</h1>
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-4 p-5 mt-3">
+            <a href="@Url.Action("Index", "Product", new {brandid = "01"})"><img src="~/images/logo/macbook.jpg" style="max-height: 155px" class="rounded-circle img-fluid border w-100"></a>
+            <h5 class="text-center mt-3 mb-3">Apple</h5>
+            <p class="text-center"><a href="@Url.Action("Index", "Product", new {brandid = "01"})" class="btn round-black-btn">Xem</a></p>
+        </div>
+        <div class="col-12 col-md-4 p-5 mt-3">
+            <a href="@Url.Action("Index", "Product", new {brandid = "02"})"><img src="~/images/logo/dell.jpg"  style="max-height: 155px" class="rounded-circle img-fluid border w-100"></a>
+            <h2 class="h5 text-center mt-3 mb-3">Dell</h2>
+            <p class="text-center"><a href="@Url.Action("Index", "Product", new {brandid = "02"})" class="btn round-black-btn">Xem</a></p>
+        </div>
+        <div class="col-12 col-md-4 p-5 mt-3">
+            <a href="@Url.Action("Index", "Product", new {brandid = "03"})"><img src="~/images/logo/asus.jpg"  style="max-height: 155px" class="rounded-circle img-fluid border w-100"></a>
+            <h2 class="h5 text-center mt-3 mb-3">Asus</h2>
+            <p class="text-center"><a href="@Url.Action("Index", "Product", new {brandid = "03"})" class="btn round-black-btn">Xem</a></p>
+        </div>
+    </div>
+</section>
+<!-- End Categories of The Month -->
+<!-- Banner -->
+
+    <div class="hero-image w-100">
+        <div class="hero-text">
+            <h1 style="font-size:55px;font-weight:800;text-shadow:0 1rem 3rem rgb(29 178 105 / 75%) !important">Asus Zenbook</h1>
+            <p>Đồ họa đỉnh cao</p>
+            <a class="btn btn-light" href="@Url.Action("Details", "Product",new {id="f81f2601-0d33-4338-80a4-8d40af03f192"})">Chi tiết</a>
+        </div>
+    </div>
+
+
+<!-- End Banner -->
+<!-- Start Featured Product -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1 text-uppercase font-weight-bold">Sản phẩm nổi bật</h1>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            @{
+                foreach (var item in Model)
+                {
+                            <div class="col-12 col-md-3 mb-4">
+                                <div class="card h-100 card-feature">
+                                    <a href="~/Product/Details/@item.Id">
+                                        <img src="~/images/product/@item.Image" class="card-img-top" alt="@item.Name">
+                                    </a>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled d-flex justify-content-between">
+                                            <li>
+                                                 <i class="text-warning fa-solid fa-star"></i>
+                                                 <i class="text-warning fa-solid fa-star"></i>
+                                                 <i class="text-warning fa-solid fa-star"></i>
+                                                 <i class="text-warning fa-solid fa-star"></i>
+                                                 <i class="text-warning fa-solid fa-star"></i>
+                                            </li>
+                                            <li class="text-muted text-right">@(item.Price?.ToString("n0")) VNĐ</li>
+                                        </ul>
+                                        <a href="~/Product/Details/@item.Id" class="h5 text-decoration-none text-dark">@item.Name</a>
+                                        
+                                         @Html.Raw(string.IsNullOrEmpty(item.Description) ? "Không có mô tả" : (item.Description.Count() >= 70 ? item.Description.Substring(0, 70) + "..." : item.Description))
+                                      
+                                        <p class="text-muted">Reviews (24)</p>
+                                    </div>
+                                </div>
+                            </div>
+                }
+            }
+
+        </div>
+    </div>
+</section>
+<!-- End Featured Product -->

@@ -1,0 +1,58 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.ImportDetail>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Chi tiết đơn hàng" + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Chi tiết nhập hàng</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-md-8">
+            </div>         
+            <div class="col-lg-4 text-right">
+                <a class=" btn btn-primary fas fa-undo-alt" asp-action="Index">Danh sách</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    @if (Model != null)
+                    {
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Product.Name</td>
+                                <td>@(item.PriceIn?.ToString("n0")) VNĐ</td>
+                                <td>@item.Quantity</td>
+                                <td>@(item.Total?.ToString("n0")) VNĐ</td>                          
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-controller="Import" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

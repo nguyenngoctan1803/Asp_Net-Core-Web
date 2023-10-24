@@ -1,0 +1,263 @@
+﻿@using DoAn2VADT.Database.Entities
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.OrderDetail>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <a class="breadcrumb-item" asp-action="Index" >Đơn hàng</a>
+            <span class="breadcrumb-item active">Chi tiết đơn hàng : trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    @if(Model.Count > 0)
+    {
+        <div class="card-body">
+            <div class="row m-b-30">  
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-7 d-flex">
+                            <a class="btn btn-success fa fa-solid fa-arrow-left" asp-action="Index"></a>
+                            <div class="input-affix m-h-10">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right m-v-10">
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         <i class="fa-solid fa-download mr-1"></i>Xuất hóa đơn
+                     </button>
+                     <div class="dropdown-menu">
+                         <a class="dropdown-item btn btn-light" href="@Url.Action("ExportBill",new{id=@ViewBag.Id, option = "excel"})" target="_blank"><i class="fa-solid fa-file-excel mr-1"></i>Excel</a>
+                         <a class="dropdown-item btn btn-light" href="@Url.Action("ExportBill",new{id=@ViewBag.Id, option = "pdf"})" target="_blank"><i class="fa-solid fa-file-pdf mr-1"></i>PDF</a>             
+                     </div>
+                    @{
+                        if (ViewBag.Status != DoAn2VADT.Shared.StatusConst.PAID && ViewBag.Status != DoAn2VADT.Shared.StatusConst.DONE)
+                        {
+                                    <a class="btn btn-primary" asp-controller="Order" asp-action="ConfirmPay" asp-route-id="@ViewBag.Id"><i class="anticon anticon-plus-circle m-r-5"></i><span>Xác nhận thanh toán</span></a>
+                        }
+                    }
+                </div>
+
+            </div>
+            <div class="table-responsive table-hover">
+               <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Thông tin</th>
+                        <th>Tổng tiền</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @{
+                            foreach (var item in Model)
+                            {
+                                            <input type="hidden" id="quantity-@item.Id" name="name-@item.Id" value="@item.Quantity" />
+                                            <input type="hidden" id="productid-@item.Id" name="phone-@item.Id" value="@item.ProductId" />
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="~/images/product/@item.Product.Image"
+                                         alt=""
+                                         style="width: 70px; height: 70px"
+                                         class="rounded-circle" />
+                                                <div class="mx-3">
+                                                    <p class="font-weight-bold mb-1">@item.Product.Name</p>
+                                                    <p class="mb-0 text-nowrap">Số lượng: @item.Quantity</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="mb-1 text-nowrap">Đơn giá: @(item.Product.Price?.ToString("n0")) VNĐ</p>
+                                             <p class="text-muted mb-0 text-nowrap">Giảm giá: @(item.Product.Discount != null ? (item.Product.Discount?.ToString("n0") + " VNĐ") : "Không")</p>
+                                        </td>
+                                        <td class="text-nowrap">@(item.Total != null ? (item.Total?.ToString("n0")) : "0") VNĐ</td>
+                                        <td class="text-center">
+                                            <button data-detailid="@item.Id" class="btn btn-sm btn-info edit">
+                                                <i class="fa fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button data-detailid="@item.Id" class="btn btn-sm btn-danger delete">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                            }
+
+
+                        }
+                </tbody>
+            </table>
+                <div aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="Order"  asp-action="Details" />
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h3 class="text-muted">Đơn hàng trống</h3>
+    }
+
+</div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("EditDetail")">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cập nhật sản phẩm trong đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-width:none !important;">
+                    <input id="editid" type="hidden" class="form-control" required="required" name="id" />
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input id="editquantity" type="number" min="1" max="10" class="form-control" required="required" name="quantity" />
+                    </div>
+                    <div class="form-group">
+                        <label>Sản phẩm</label>
+                        <select id="editproductid" name="productid" class="custom-select form-control" style="min-width: 200px;" asp-items="ViewBag.ProductList">
+                               <option value="" disabled>Chọn sản phẩm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" id="editbutton" value="Xác nhận">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal delete-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa sản phẩm trong đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn chắc chắn xóa sản phẩm này của đơn hàng?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <form method="post" action="@Url.Action("DeleteDetail")">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deleteid" name="deleteid" />
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+        <script>
+            $(document).ready(function () {
+                // edit 
+                    $(".edit").click(function (event) {
+                        var editid = $(this).attr("data-detailid");
+                        var quantity = $("#quantity-" + editid).val();
+                        var productid = $("#productid-" + editid).val();
+
+                        $("#editid").val(editid);
+                        $("#editquantity").val(quantity);
+                        $("#editproductid").val(productid);
+
+                        //submit
+                        document.getElementById("editbutton").type = "submit";
+                        $("#editModal").modal();
+                    });
+                // delete
+                $(".delete").click(function (event) {
+                    var deleteid = $(this).attr("data-detailid");
+                    $("#deleteid").val(deleteid);
+                    $("#deleteModal").modal();
+                });
+
+                jQuery("#txtCatID").change(function () {
+                    var Id = jQuery(this).children(":selected").attr("value");
+                    Id = parseFloat(Id);
+                    $('#txtCatID option')
+                        .removeAttr('selected');
+                    $("#txtCatID > [value=" + Id + "]").attr("selected", "true");
+                    $.ajax({
+                        url: '/Book/Filtter',
+                        datatype: "json",
+                        type: "GET",
+                        data: {
+                            CatID: Id
+                        },
+                        async: true,
+                        success: function (results) {
+                            if (results.status == "success") {
+                                window.location.href = results.redirectUrl;
+                            }
+                        },
+                        error: function (xhr) {
+                            alert('error');
+                        }
+                    });
+                });
+                jQuery("#txtIDXB").change(function () {
+                    var Id = jQuery(this).children(":selected").attr("value");
+                    Id = parseFloat(Id);
+                    $('#txtIDXB option')
+                        .removeAttr('selected');
+                    $("#txtIDXB > [value=" + Id + "]").attr("selected", "true");
+                    $.ajax({
+                        url: '/Book/Filtter',
+                        datatype: "json",
+                        type: "GET",
+                        data: {
+                            CatID: Id
+                        },
+                        async: true,
+                        success: function (results) {
+                            if (results.status == "success") {
+                                window.location.href = results.redirectUrl;
+                            }
+                        },
+                        error: function (xhr) {
+                            alert('error');
+                        }
+                    });
+                });
+                $("#keyword").keyup(function () {
+                    var strkeyword = $('#keyword').val();
+                    $.ajax({
+                        url: '/Search/FindBanHang/',
+                        datatype: "json",
+                        type: "POST",
+                        data: { keyword: strkeyword },
+                        async: true,
+                        success: function (results) {
+                            $("#records_table").html("");
+                            $("#records_table").html(results);
+                        },
+                        error: function (xhr) {
+                            alert('error');
+                        }
+                    });
+                });
+            });
+        </script>
+    }

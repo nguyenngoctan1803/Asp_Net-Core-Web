@@ -1,0 +1,77 @@
+﻿@model DoAn2VADT.Database.Entities.Account
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content my-2">
+        <form asp-action="Create">
+            <div class="page-header">
+                <div class="header-sub-title">
+                    <nav class="breadcrumb breadcrumb-dash">
+                        <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+                        <a asp-controller="Account" asp-action="Index" class="breadcrumb-item">Danh sách </a>
+                        <span class="breadcrumb-item active">Thêm tài khoản</span>
+                    </nav>
+                </div>
+            </div>
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class=" col-md-6">
+                        </div>
+                        <div class=" col-md-6 text-right">
+                            <a class=" btn btn-success fas fa-undo-alt" asp-action="Index"></a>
+                            <button class="btn btn-primary fas fa-plus-circle " type="submit"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Name">Tên người sử dụng</label>
+                            <input asp-for="Name" class="form-control" is-valid" placeholder="Tên " required />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <label asp-for="UserName">Tên đăng nhập</label>
+                            <input asp-for="UserName" class="form-control" is-valid" placeholder="Tên đăng nhập" required />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class=" row">
+                        <div class="form-group col-md-6 ">
+                            <label asp-for="Password">Mật khẩu</label>
+                            <input asp-for="Password" class="form-control" is-valid" placeholder="Mật khẩu" required />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Vai trò</label>
+                            <select class="custom-select" asp-for="Role" style="min-width: 200px;">
+                                <option value="" disabled selected>Chọn quyền</option>
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </form>
+    </section>
+    <!-- /.content -->
+</div>

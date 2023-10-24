@@ -1,0 +1,97 @@
+﻿@model DoAn2VADT.Database.Entities.Customer
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+        <!-- Main content -->
+        <section class="content my-2">
+            <form asp-action="Edit">
+                <div class="page-header">
+                    <div class="header-sub-title">
+                        <nav class="breadcrumb breadcrumb-dash">
+                            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                            <a asp-area="Admin" asp-controller="Customer" asp-action="Index" class="breadcrumb-item">Danh sách </a>
+                            <span class="breadcrumb-item active">Cập nhật</span>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Default box -->
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class=" col-md-6">
+                        </div>
+                        <div class=" col-md-6 text-right">
+                            <a class=" btn btn-success fas fa-undo-alt" asp-action="Index"></a>
+                            <button class="btn btn-primary" type="submit"><i class="fas fas fa-save mr-1"></i>Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="UpdatedAt" />
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Name">Tên khách hàng</label>
+                            <input asp-for="Name" class="form-control" is-valid" placeholder="Tên" required />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <label asp-for="Phone">Số điện thoại</label>
+                            <input asp-for="Phone" class="form-control" is-valid" placeholder="Số điện thoại" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class=" row">
+                        <div class="form-group col-md-6 ">
+                            <label asp-for="Email">Email</label>
+                            <input asp-for="Email" class="form-control" is-valid" placeholder="Email" />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 ">
+                            <label asp-for="Address">Địa chỉ</label>
+                            <input asp-for="Address" class="form-control" is-valid" placeholder="Địa chỉ" />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" row">
+                        <div class="form-group col-md-6 ">
+                            <label asp-for="Password">Mật khẩu</label>
+                            <input asp-for="Password" class="form-control" is-valid" placeholder="Mật khẩu" required />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 ">
+                            <label asp-for="CreatedAt">Ngày tạo</label>
+                            <input asp-for="CreatedAt" class="form-control" is-valid" placeholder="Ngày tạo" required />
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+            </form>
+        </section>
+    </div>
+
+    <!-- /.content -->
+</div>

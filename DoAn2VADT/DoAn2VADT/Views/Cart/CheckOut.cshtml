@@ -1,0 +1,179 @@
+﻿@model List<DoAn2VADT.Database.Entities.Cart>
+@{
+    ViewData["Title"] = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <a asp-controller="Cart" asp-action="Index" class="breadcrumb-item">Giỏ hàng</a>
+            <span class="breadcrumb-item active">Thanh toán giỏ hàng</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Sản phẩm</span>
+                <span class="badge badge-secondary badge-pill">@Model.Count</span>
+            </h4>
+            <ul class="list-group mb-3 sticky-top">
+                @{
+                    decimal? total = 0;
+                    decimal? shipfee = Model.Count > 0 ? 30000 : 0;
+                }
+                @foreach (var item in Model)
+                {
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">@item.Product.Name</h6>
+                                <small class="text-muted">Số lượng: @item.Quantity</small>
+                            </div>
+                        @{
+                            if (item.Product.Discount != null)
+                            {
+                                total += (item.Product.Price - item.Product.Discount) * item.Quantity;
+                                <span class="text-muted">@(((item.Product.Price - item.Product.Discount) * item.Quantity)?.ToString("n0"))VNĐ</span>
+                            }
+                            else
+                            {
+                                total += item.Product.Price * item.Quantity;
+                                <span class="text-muted">@((item.Product.Price * item.Quantity)?.ToString("n0"))VNĐ</span>
+                            }
+                        }
+
+                        </li>
+                }
+
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-success">
+                        <h6 class="my-0">Khuyến mãi</h6>
+                        <small>Nope</small>
+                    </div>
+                    <span class="text-success">Đang cập nhật chương trình</span>
+                </li>       
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Phí giao hàng (VNĐ)</span>
+                    <span class="text-muted">@(Model.Count > 0 ? "30000" : "")</span>
+
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Tổng cộng (VNĐ)</span>
+                    <strong>@((total + shipfee)?.ToString("n0")) VNĐ</strong>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="col-md-7 order-md-1">
+            <h4 class="mb-3">Thông tin thanh toán</h4>
+            <form class="needs-validation" method="post" action="@Url.Action("CheckOut")">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">Họ và Tên</label>
+                        <input type="text" class="form-control" id="firstName" name="Name" placeholder="Tên" value="@ViewBag.Name" required="">
+                        <div class="invalid-feedback">Vui lòng nhập vào tên. </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="lastName" name="Phone" placeholder="Số điện thoại" required pattern="[0-9]{10}" value="@ViewBag.Phone">
+                        <div class="invalid-feedback"> Vui lòng nhập số điện thoại. </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="firstName">Địa chỉ</label>
+                        <input type="text" class="form-control w-100" id="address" name="Address" placeholder="Địa chỉ" value="@ViewBag.Address" required="">
+                        <div class="invalid-feedback"> Vui lòng nhập địa chỉ nhận hàng. </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="optionPay">Hình thức thanh toán</label>                     
+                        <div class="row">
+                     <div class="col-md-6 mb-3">
+                         <input type="radio" class="form-check-input" name="payoption" value="ship" id="success-outlined" autocomplete="off" checked>
+                        <label class="btn rounded border w-100 p-2 align-items-center" for="success-outlined"><i class="fa-solid fa-truck text-primary pr-2"></i>Thanh toán khi nhận hàng</label>
+                </div>
+                     <div class="col-md-6 mb-3">
+                        <input type="radio" class="form-check-input" name="payoption" value="momo" id="danger-outlined" autocomplete="off">
+                        <label class="btn rounded border w-100 p-2 align-items-center" for="danger-outlined"><i class="fab fa-cc-mastercard fa-lg text-danger pr-2"></i>Thanh toán bằng MoMo</label>
+                </div>
+                 
+                    </div>
+                    </div>
+
+
+                </div>
+                <hr class="mb-1">
+                <button class="btn btn-lg btn-block round-black-btn" type="submit">Đặt hàng</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function () {
+                'use strict'
+                window.addEventListener('load', function () {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation')
+
+                    // Loop over them and prevent submission
+                    Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+                }, false)
+            }())
+        </script>
+}
+@section Styles{
+        <style>
+            /* ----------------------- Presentational stuff ----------------------- */
+            .container {
+                max-width: 1142px;
+            }
+
+            .lh-condensed {
+                line-height: 1.25;
+            }
+
+            .round-black-btn {
+                border-radius: 4px;
+                background: #212529;
+                color: #fff;
+                padding: 7px 45px;
+                display: inline-block;
+                margin-top: 20px;
+                border: solid 2px #212529;
+                transition: all 0.5s ease-in-out 0s;
+            }
+
+                .round-black-btn:hover,
+                .round-black-btn:focus {
+                    background: transparent;
+                    color: #212529;
+                    text-decoration: none;
+                }
+
+            input {
+                max-width: none;
+            }
+                input[type=radio] {
+                border: 0px;
+                width: 20px;
+                height: 1.5em;
+    }
+ </style>
+}
+

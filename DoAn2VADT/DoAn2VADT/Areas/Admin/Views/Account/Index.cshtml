@@ -1,0 +1,135 @@
+﻿@using DoAn2VADT.Extension;
+@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.Account>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Tài khoản" ;
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách tài khoản : trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="input-affix m-v-10">
+                          <form method="get">
+                               <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                               <input id="searchkey" name="searchkey" type="search" class="form-control" placeholder="Tìm kiếm tài khoản">
+                          </form>                          
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-affix m-v-10">
+                            <select class="custom-select" id="txtrole" name="txtrole" style="min-width: 200px;">
+                                <option value="" selected disabled>tất cả</option>
+                                <option value="1">Admin</option>
+                                <option value="0">User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-right m-v-10">
+                        <a class="btn btn-primary" asp-controller="Account" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm tài khoản</span></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>Tên</th>
+                        <th>Tên đăng nhập</th>
+                        <th>Mật khẩu</th>
+                        <th>Vai trò</th>
+                        <th>Ngày tạo</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.UserName</td>
+                                <td>
+                                    <a>
+                                        @item.Password
+                                    </a>
+                                </td>
+                                <td>
+                                    @if (@item.Role == "1")
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Admin</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>User</div>
+                                        </div>
+                                    }
+                                </td>
+                                <td>@item.CreatedAt</td>
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5 fas fa-eye" asp-controller="Account" asp-action="Details" asp-route-id="@item.Id"></a>
+                                    <a class="btn btn-secondary btn-tone m-r-5 fas fa-edit" asp-controller="Account" asp-action="Edit" asp-route-id="@item.Id"></a>
+                                    <a class="btn btn-danger btn-tone m-r-5 far fa-trash-alt" asp-controller="Account" asp-action="Delete" asp-route-id="@item.Id"></a>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-controller="Account" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+            $(document).ready(function () {
+                jQuery("#txtrole").change(function () {
+                    var Id = jQuery(this).children(":selected").attr("value");
+                        $('#txtrole option')
+                        .removeAttr('selected');
+                        $("#txtrole > [value=" + Id + "]").attr("selected", "true");
+                    $.ajax({
+                        url: '@Url.Action("Index")',
+                        type: "GET",
+                        data: {
+                            role: Id
+                        },
+                        async: true,
+                        success: function (results) {
+                            if (results.status == "success") {
+                                window.location.href = results.redirectUrl;
+                            }
+                        },
+                    });
+                });
+
+            });
+    </script>
+}

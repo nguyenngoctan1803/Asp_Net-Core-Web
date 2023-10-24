@@ -1,0 +1,33 @@
+﻿<div class="side-nav">
+    <div class="side-nav-inner">
+        <ul class="side-nav-menu scrollable">
+            <li class="nav-item">
+                <a class="dropdown-toggle" asp-action="Index" asp-controller="Dashboard">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-dashboard"></i>
+                    </span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            @*Nhập và bán sách *@
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray;margin:0">
+            <li class="nav-item">
+                <a asp-controller="Order" asp-action="Index">
+                    <span class="icon-holder">
+                        <i class="fas fa-address-book"></i>
+                    </span>
+                    <span class="title">Bán hàng</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="dropdown-toggle" data-toggle="dropdown" data-target="#collapse" aria-expanded="true">
+                    <span class="icon-holder">
+                        <i class="fas fa-donate"></i>
+                    </span>
+                    <span class="title">Thống kê</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

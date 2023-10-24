@@ -1,0 +1,57 @@
+﻿@model DoAn2VADT.Database.Entities.Order
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content my-2">
+        <form asp-action="Delete">
+            <div class="page-header">
+                <div class="header-sub-title">
+                    <nav class="breadcrumb breadcrumb-dash">
+                        <a asp-controller="Dash" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                        <a asp-area="Admin" asp-controller="ThongKe" asp-action="Index" class="breadcrumb-item">Danh sách </a>
+                        <span class="breadcrumb-item active">Xóa</span>
+                    </nav>
+                </div>
+            </div>
+            <!-- Default box -->
+
+            <div class="card-header">
+                <div class="row">
+                    <div class=" col-md-6">
+                    </div>
+                    <div class=" col-md-6 text-right">
+                        <a class=" btn btn-success fas fa-undo-alt" asp-controller="ThongKe" asp-action="Index"></a>
+                        <button class=" btn btn-danger far fa-trash-alt" type="submit"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content m-t-15">
+                <div class="tab-pane fade show active">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="font-weight-semibold" for="productName">Hóa đơn</label>
+                                <div class="form-control">@Html.DisplayFor(model => model.Name)</div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="font-weight-semibold" for="productColors">Ngày bán</label>
+                                    <div class="form-control">@Html.DisplayFor(model => model.CreatedAt)</div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="font-weight-semibold" for="productColors">Thành tiền</label>
+                                    <div class="form-control">@Html.DisplayFor(model => model.Total)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <!-- /.content -->
+</div>

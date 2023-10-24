@@ -1,0 +1,152 @@
+﻿@model DoAn2VADT.Database.Entities.Product
+@{
+    ViewData["Title"] = "Chi tiết";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+    <div class="page-header">
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                <a asp-controller="Product" asp-action="Index" class="breadcrumb-item">Sản phẩm</a>
+                <span class="breadcrumb-item active">Chi tiết</span>
+            </nav>
+        </div>
+    </div>
+        <div class="page-header no-gutters has-tab">
+            <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+                <div class="media align-items-center m-b-15">
+                    <div class="avatar avatar-image" style="height: 70px; width: 70px">
+                        <img width="200" height="200" src="~/images/product/@Model.Image" alt="@Model.Name" />
+                    </div>
+                    <div class="m-l-15">
+                        <h4 class="m-b-0">@Model.Name</h4>
+                        <p class="text-muted m-b-0">ID: #@Model.Id</p>
+                    </div>
+                </div>
+                <div class="m-b-15">
+                    <a class=" btn btn-primary fas fa-undo-alt" asp-action="Index"></a>
+                    <a class=" btn btn-success fas fa-edit" asp-action="Edit" asp-route-id="@Model.Id"> </a>
+                    <a class=" btn btn-danger far fa-trash-alt" asp-action="Delete" asp-route-id="@Model.Id"> </a>
+                </div>
+            </div>
+            <ul class="nav nav-tabs" >
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#product-overview">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#product-images">Images</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <div class="tab-content m-t-15">
+                <div class="tab-pane fade show active" id="product-overview" >        
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class=" col-md-6">
+                                    <h4 class="card-title">Thông tin sản phẩm</h4>
+                                    <div class="table-responsive">
+                                        <table class="product-info-table m-t-20">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td class="text-dark font-weight-semibold">
+                                                        @Model.Name
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Price:</td>
+                                                    <td class="text-dark font-weight-semibold">@(Model.Price?.ToString("n0")) VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Code:</td>
+                                                    <td>@Model.Code</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mặt hàng:</td>
+                                                    <td>@Model.Category.Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Số lượng:</td>
+                                                    <td>@Model.Quantity</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Giảm giá:</td>
+                                                    <td>@Model.Discount</td>
+                                                </tr>   
+                                                <tr>
+                                                    <td>Thương hiệu:</td>
+                                                    <td>@Model.Brand.Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ngày tạo:</td>
+                                                    <td>@Model.CreatedAt?.ToString("dd/MM/yyyy hh:mm")</td>
+                                                </tr>
+                                            </tbody>
+                                        </table> 
+                                    </div>
+                                </div>
+                            <div class="col-md-6">
+                            <h4 class="card-title">Thông số kỹ thuật</h4>
+                            <div class="table-responsive">
+                                <table class="product-info-table m-t-20">
+                                    <tbody>
+                                        <tr>
+                                            <td>Màu sắc:</td>
+                                            <td>@Model.Color</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bộ xử lý:</td>
+                                            <td>@Model.Main</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Màn hình:</td>
+                                            <td>@Model.Screen</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bộ nhớ:</td>
+                                            <td>@Model.Memory</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ram:</td>
+                                            <td>@Model.Ram GB</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hình ảnh:</td>
+                                            <td>
+                                                <img width="auto" height="200" style="object-fit:cover" src="~/images/product/@Model.Image" alt="@Model.Name" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Mô tả sản phẩm</h4>
+                        </div>
+                        <div class="card-body">
+                            @Html.Raw(Model.Description)
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="product-images">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img width="auto" height="400" style="object-fit:cover" src="~/images/product/@Model.Image" alt="@Model.Name" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+   

@@ -1,0 +1,91 @@
+﻿@model DoAn2VADT.Database.Entities.Account
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content my-2">
+        <form asp-action="">
+            <div class="page-header">
+                <div class="header-sub-title">
+                    <nav class="breadcrumb breadcrumb-dash">
+                        <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+                        <span class="breadcrumb-item active">Thông tin</span>
+                    </nav>
+                </div>
+            </div>
+            <!-- Default box -->
+            <div class="tab-content m-t-15">
+                <div class="tab-pane fade show active">
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                                <div class="media align-items-center">
+                                    <div class="avatar avatar-image  m-h-10 m-r-15" style="height: 80px; width: 80px">
+                                        <img src="~/Adminassets/images/avatars/thumb-3.jpg" alt="">
+                                    </div>
+                                    <div class="m-l-20 m-r-20">
+                                        <h5 class="m-b-5 font-size-18">@Html.DisplayFor(model => model.Name)</h5>
+                                        <p class="opacity-07 font-size-13 m-b-0">
+                                            @if (Model.Role == "1")
+                                            {
+                                                <span>Quản trị viên</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Người sử dụng</span>
+                                            }
+                                            <br>
+                                            Quản lý nhà sách
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <hr class="m-v-25">
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="font-weight-semibold" for="userName">Tên đăng nhập</label>
+                                        <div class="form-control">@Html.DisplayFor(model => model.UserName)</div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="font-weight-semibold" for="userName">Tên</label>
+                                        <div class="form-control">@Html.DisplayFor(model => model.Name)</div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="font-weight-semibold" for="phoneNumber">Ngày tạo:</label>
+                                        <div class="form-control">@Html.DisplayFor(model => model.CreatedAt)</div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="font-weight-semibold" for="dob">Ngày Update:</label>
+                                        <div class="form-control">@Html.DisplayFor(model => model.UpdatedAt)</div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="font-weight-semibold" for="language">Quyền</label>
+                                        @if (Model.Role == "1")
+                                        {
+                                            <div class="form-control">Quản trị viên</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="form-control">Người sử dụng</div>
+                                        }
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <a class=" btn btn-primary fas fa-undo-alt" asp-controller="Dashboard" asp-action="Index"></a>
+                        <a class=" btn btn-success fas fa-edit" asp-controller="Account" asp-action="Edit" asp-route-id="@Model.Id"> </a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </section>
+    <!-- /.content -->
+</div>

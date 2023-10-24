@@ -1,0 +1,390 @@
+﻿@using AspNetCoreHero.ToastNotification.Abstractions
+@inject INotyfService notyfService
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+@using DoAn2VADT.Database.Entities
+@using PagedList.Core.Mvc
+@model List<DoAn2VADT.Database.Entities.OrderDetail>
+@using DoAn2VADT.Shared;
+@{
+    ViewData["Title"] = "Bán hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+    var dt = DateTime.Now;
+
+}
+@{
+    if (TempData["UpdateQuantity"] != null)
+    {
+        notyfService.Success(TempData["UpdateQuantity"].ToString());
+    }
+    if (TempData["ErrorQuantity"] != null)
+    {
+        notyfService.Error(TempData["ErrorQuantity"].ToString());
+    }
+
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Bán hàng</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">  
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-7 d-flex">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-right m-v-10">
+                @{
+                    @if (!String.IsNullOrEmpty(Accessor.HttpContext.Session.GetString(Const.SELLID)))
+                    {
+                        <button class="btn btn-danger bill"><i class="fa-solid fa-exclamation mr-1"></i><span>In hóa đơn</span></button>
+                         <a class="btn btn-success" href="@Url.Action("Done")"><i class="fa-solid fa-check mr-1"></i><span>Xong</span></a>
+                    }
+                    else
+                    {
+            
+                        if (Model.Count>0)
+                        {
+                            <button class="btn btn-primary confirmpay"><i class="fa-solid fa-check mr-1"></i><span>Xác nhận thanh toán</span></button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-danger" disabled><i class="fa-solid fa-exclamation mr-1"></i><span>Hãy chọn sản phẩm</span></button>
+                        }
+                    }
+                   
+                }
+            </div>
+
+        </div>
+        <div class="table-responsive table-hover">
+           <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng tiền</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="~/images/product/@item.Product.Image"
+                                         alt=""
+                                         style="width: 70px; height: 70px"
+                                         class="rounded-circle" />
+                                                    <div class="mx-3">
+                                                        <p class="font-weight-bold mb-1">@item.Product.Name</p>
+                                                        <p class="mb-0 text-nowrap">Mã: @item.Product.Code</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="mb-1 text-nowrap">Đơn giá: @(item.Product.Price?.ToString("n0")) VNĐ</p>
+                                                 <p class="text-muted mb-0 text-nowrap">Giảm giá: @(item.Product.Discount != null ? (item.Product.Discount?.ToString("n0") + " VNĐ") : "Không")</p>
+                                            </td>
+                                             <td class="product-count">
+                                                <div class="display-flex text-center">  
+                                                    <div class="qtyminus decre" data-productid="@item.Product.Id">-</div>
+                                                    <input id="@($"quantity-{item.Product.Id}")" type="text" name="quantity" readonly value="@item.Quantity" class="qty">
+                                                    <div class="qtyplus incre" data-productid="@item.Product.Id">+</div>
+                                                </div>
+                                            </td>
+                                            <td class="text-nowrap">@(item.Total?.ToString("n0")) VNĐ</td>
+                                            <td class="text-center">
+                                                <a href="@Url.Action("RemoveProduct", "Sell", new { id = item.ProductId })" class="btn btn-danger"><i class="fa-solid fa-trash mr-1"></i>Xóa</a>
+                                            </td>
+                                        </tr>
+                        }
+
+
+                    }
+            </tbody>
+        </table>
+
+        </div>
+    </div>
+</div>
+<div class="chat chat-app row">
+    <div class="chat-content col-md-12">
+        <div class="conversation">
+            <div class="conversation-wrapper">
+                <div class="conversation-header">
+                    <div class="input-affix m-v-20">
+                        <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                        <input id="keyword" name="keyword" type="text" class="form-control w-50" placeholder="Tìm kiếm sản phẩm">
+                    </div>
+                </div>
+                <div class="conversation-body">
+                    <div class="m-t-30">
+                        <div class="table-responsive">
+                            <table class="table table-hover e-commerce-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sản phẩm</th>
+                                        <th>Giá</th>
+                                        <th class="text-center">Tồn kho</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th class="text-center">Chức năng</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="records_table">
+                                    @if (Model != null)
+                                    {
+                                        foreach (Product item in ViewBag.ProductList)
+                                        {
+                                                    <tr>
+                                                               <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="~/images/product/@item.Image"
+                                                             alt="@item.Name"
+                                                             style="width: 70px; height: 70px"
+                                                             class="rounded-circle" />
+                                                            <div class="mx-3">
+                                                                <p class="font-weight-bold mb-1">@item.Name</p>
+                                                                <p class="mb-0 text-nowrap">Mã: @item.Code</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                        <td>@item.Price?.ToString("n0") VNĐ</td>
+                                                        <td class="text-center">@item.Quantity</td>
+                                                        <td class="text-center">
+                                                    @if (item.Quantity > 0)
+                                                    {
+                                                        <span class="badge badge-success m-r-10">Còn hàng</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-danger m-r-10">Hết hàng</span>
+                                                    }
+
+                                                        <td class="text-center">
+                                                        @if (item.Quantity > 0)
+                                                        {
+                                                                    <a class="btn btn-primary btn-tone m-r-5 " asp-controller="Sell" asp-action="AddProduct" asp-route-id="@item.Id"><i class="fas fa-plus"></i></a>
+                                                                    <a class="btn btn-success btn-tone m-r-5 " asp-controller="Sell" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-eye"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                                    <a class="btn btn-danger btn-tone m-r-5" disabled><i class="fas fa-plus"></i></a>
+                                                                    <a class="btn btn-success btn-tone m-r-5 " asp-controller="Sell" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-eye"></i></a>
+                                                        }
+                                                        </td>
+                                                    </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal confirm-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" action="@Url.Action("ConfirmPay")">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nhập thông tin đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-width:none !important;">
+                    <div class="form-group nameorder">
+                        <label>Tên người nhận</label>
+                        <input id="name" type="text" class="form-control" required name="name" placeholder="Tên"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input id="phone" type="tel" class="form-control" required pattern="[0-9]{10}" placeholder="Số điện thoại gồm 10 chữ số" name="phone" />
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input id="address" type="text" class="form-control" required name="address" placeholder="Địa chỉ"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Giảm giá</label>
+                        <input id="discount" type="text" pattern="\d*" class="form-control" name="discount" placeholder="Số tiền giảm giá" />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="optionPay">Hình thức thanh toán</label>                     
+                                <div class="row">
+                                 <div class="col-md-6 mb-3">
+                                     <input type="radio" class="form-check-input" name="payoption" value="ship" id="success-outlined" autocomplete="off" checked>
+                                    <label class="btn rounded border w-100 p-2 align-items-center" for="success-outlined"><i class="fa-solid fa-truck text-primary pr-2"></i>Thanh toán khi nhận hàng</label>
+                                </div>
+                                 <div class="col-md-6 mb-3">
+                                    <input type="radio" class="form-check-input" name="payoption" value="momo" id="danger-outlined" autocomplete="off">
+                                    <label class="btn rounded border w-100 p-2 align-items-center" for="danger-outlined"><i class="fab fa-cc-mastercard fa-lg text-danger pr-2"></i>Thanh toán bằng MoMo</label>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="submitbutton">Xác nhận</button>
+                </div>    
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal bill-->
+<div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:10000 !important">
+     <div class="modal-dialog modal-lg" id="bill-modal" role="document">
+         <!-- Partial bill-->
+    </div>
+</div>
+@section Styles{
+        <link href="~/css/bill.css" rel="stylesheet"/>
+        <style type="text/css" media="print">
+            html, body {
+                margin:0;
+                padding:10px;
+            }
+            .modal{
+                display:none;
+            }
+        </style>
+        <style>
+
+
+             .product-count .qtyminus,
+                    .product-count .qtyplus {
+                        width: 34px;
+                        height: 34px;
+                        background: #212529;
+                        text-align: center;
+                        font-size: 19px;
+                        line-height: 36px;
+                        color: #fff;
+                        cursor: pointer;
+                    }
+
+                    .product-count .qtyminus {
+                        border-radius: 3px 0 0 3px;
+                    }
+
+                    .product-count .qtyplus {
+                        border-radius: 0 3px 3px 0;
+                    }
+
+                    .product-count .qty {
+                        width: 60px;
+                        height:34px;
+                        text-align: center;
+                    }
+                .display-flex {
+                    display: flex;
+                }
+        </style>
+
+}
+@section scripts{
+            <script>
+                    function printBill() {
+                        var restorepage = $('body').html();
+                        var printcontent = $('#bill-print').clone();
+                        var enteredtext = $('#text').val();
+                        $('body').empty().html(printcontent);
+                        window.print();
+                        $('body').html(restorepage);
+                        $('#text').html(enteredtext);
+                        window.location.reload();
+                };
+                $(document).ready(function () {
+                    // confirm
+                    $(".confirmpay").click(function (event) {
+                        $("#confirmModal").modal();
+                    });
+                    // bill
+                    $(".bill").click(function (event) {
+                    $.ajax({
+                        url: "@Url.Action("GetBill")",
+                        type: "POST",
+                        success: function (results) {
+                            $("#bill-modal").html("");
+                            $("#bill-modal").html(results);
+                            $("#billModal").modal();
+                        },
+                        error: function (results) {
+                            alert(results.responseText);
+                        }
+                    });
+                       
+                    });
+                    ///////
+                    $(".qtyminus").on("click", function () {
+                        var productid = $(this).attr("data-productid");
+                        var quantity = $("#quantity-" + productid).val();
+                        if ($.isNumeric(quantity)) {
+                            if (parseInt(quantity) - 1 > 0) { quantity--; }
+                            $("#quantity-" + productid).val(quantity)
+                        }
+                    })
+                    $(".qtyplus").on("click", function () {
+                        var productid = $(this).attr("data-productid");
+                        var quantity = $("#quantity-" + productid).val();
+                        if ($.isNumeric(quantity)) {
+                            $("#quantity-" + productid).val(parseInt(quantity) + 1);
+                        }
+                    });
+                    $(".decre").click(function (event) {
+                          event.preventDefault();
+                          var productid = $(this).attr("data-productid");
+                          var quantity = $("#quantity-" + productid).val();
+                          $.ajax({
+                              type: "POST",
+                              url:"@Url.Action("UpdateQuantity")",
+                              data: {
+                                  productid: productid,
+                                  quantity:quantity
+                              },
+                              success: function (result) {
+                                 window.location.reload();
+                              }
+                          });
+                    });
+                     $(".incre").click(function (event) {
+                          event.preventDefault();
+                          var productid = $(this).attr("data-productid");
+                          var quantity = $("#quantity-" + productid).val();
+                          $.ajax({
+                              type: "POST",
+                              url:"@Url.Action("UpdateQuantity")",
+                              data: {
+                                  productid: productid,
+                                  quantity:quantity
+                              },
+                              success: function (result) {
+                                  window.location.reload();
+                              }
+                          });
+                    });
+                });
+            </script>
+}

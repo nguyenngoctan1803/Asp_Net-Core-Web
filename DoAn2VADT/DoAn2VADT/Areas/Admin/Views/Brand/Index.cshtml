@@ -1,0 +1,80 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<DoAn2VADT.Database.Entities.Brand>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách Thương hiệu" + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_GlobalLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Dashboard" asp-action="Index" class="breadcrumb-item"><i class="fa-solid fa-house mr-1"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Thương hiệu: trang @CurrentPage </span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-affix m-v-10">
+                            <form method="get">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="searchkey" name="searchkey" type="text" class="form-control" placeholder="Tìm kiếm ">
+                            </form>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 text-right m-v-10">
+                <a class="btn btn-primary" asp-controller="Brand" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm</span></a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Tên thương hiệu</th>
+                        <th class="text-center">Mô tả</th>
+                        <th scope="col" class="text-center" style="width:300px;">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row" class="text-center">@item.Name</td>
+                                <td scope="row" class="text-center">@item.Description</td>
+                                <td class="text-center" style="width:300px;">
+                                    <a class="btn btn-primary btn-tone m-r-5 fas fa-eye" asp-controller="Brand" asp-action="Details" asp-route-id="@item.Id"></a>
+                                            <a class="btn btn-secondary btn-tone m-r-5 fas fa-edit" asp-controller="Brand" asp-action="Edit" asp-route-id="@item.Id"></a>
+                                            <a class="btn btn-danger btn-tone m-r-5 far fa-trash-alt" asp-controller="Brand" asp-action="Delete" asp-route-id="@item.Id"></a>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-controller="Brand" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+    </script>
+}
